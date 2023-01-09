@@ -9,13 +9,16 @@ import com.example.userservicemsa.user.repository.HistoryMsRepository;
 import com.example.userservicemsa.user.repository.MemberMsRepository;
 import com.example.userservicemsa.user.vo.MemberMsVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     private MemberMsRepository memberMsRepository;
 
@@ -82,4 +85,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 }
