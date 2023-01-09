@@ -6,7 +6,7 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 
 public interface DocumentFormatGenerator {
 
-    static Attributes.Attribute getRequire() { // (2)
-        return key("require").value("true");
+    static Attributes.Attribute getRequire(boolean value) { // (2)
+        return key("require").value(value);
     }
 }

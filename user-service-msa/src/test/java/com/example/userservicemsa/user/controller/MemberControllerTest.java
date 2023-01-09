@@ -9,17 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static com.example.userservicemsa.DocumentFormatGenerator.getRequire;
 import static com.example.util.ApiDocumentUtils.getDocumentRequest;
 import static com.example.util.ApiDocumentUtils.getDocumentResponse;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -74,11 +71,11 @@ class MemberControllerTest {
 //                                parameterWithName("id").description("아이디")
 //                        ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional().attributes(getRequire()),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일").optional().attributes(getRequire()),
-                                fieldWithPath("id").type(JsonFieldType.STRING).description("아이디").optional().attributes(getRequire()),
-                                fieldWithPath("pw").type(JsonFieldType.STRING).description("패스워드").optional().attributes(getRequire()),
-                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("핸드폰번호").optional().attributes(getRequire()),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("id").type(JsonFieldType.STRING).description("아이디"),
+                                fieldWithPath("pw").type(JsonFieldType.STRING).description("패스워드"),
+                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("핸드폰번호").optional(),
                                 fieldWithPath("birthInfo").type(JsonFieldType.STRING).description("주소").optional(),
                                 fieldWithPath("address").type(JsonFieldType.STRING).description("생년월일").optional()
                         ),
