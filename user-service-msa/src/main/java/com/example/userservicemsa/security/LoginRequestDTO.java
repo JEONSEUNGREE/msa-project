@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class LoginRequestDTO {
     @NotNull(message = "Email cannot be null")
     @Size(min = 7, message = "Email cannot be less than 7 character")
-    @Email()
+    @Email
     private String email;
 
     @NotNull(message = "Password cannot be null")

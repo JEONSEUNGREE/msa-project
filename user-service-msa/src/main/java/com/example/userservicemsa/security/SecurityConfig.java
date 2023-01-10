@@ -37,27 +37,20 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring().mvcMatchers(
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/api/v1/login" // 임시
-        );
+        return (web) -> web.ignoring().mvcMatchers(SecurityConstant.resourceArray);
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider jwtProvider, CookieUtil cookieUtil) throws Exception {
-        return http.antMatcher("/**")
-                .authorizeRequests()
-                .antMatchers("/api/v1/**").permitAll()
-                .and()
-                .httpBasic().disable()
+        http.httpBasic().disable()
                 .formLogin().disable()
                 .cors().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .anyRequest().permitAll()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+
+        return http.authorizeRequests()
+                .antMatchers(SecurityConstant.permitAllArray).permitAll()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(jwtProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()

@@ -2,11 +2,12 @@ package com.example.userservicemsa.user.service;
 
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.entity.AuthMs;
-import com.example.userservicemsa.user.entity.HistoryMs;
 import com.example.userservicemsa.user.entity.MemberMs;
 import com.example.userservicemsa.user.repository.AuthMsRepository;
 import com.example.userservicemsa.user.repository.HistoryMsRepository;
 import com.example.userservicemsa.user.repository.MemberMsRepository;
+import com.example.userservicemsa.user.vo.AuthMsVO;
+import com.example.userservicemsa.user.vo.MemberDetails;
 import com.example.userservicemsa.user.vo.MemberMsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl implements MemberService, UserDetailsService {
@@ -43,13 +47,20 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     public MemberMsVO getMemberInfo(MemberMsVO memberMsVO) {
 
         // 유저정보 조회
-        MemberMs memberMs = memberMsRepository.findAllByUserId(memberMsVO.getUserId());
-        MemberMsVO memberVo = new MemberMsVO();
+        Optional<MemberMs> memberMs = memberMsRepository.findByUserId(memberMsVO.getUserId());
+        memberMs.orElseGet(() -> MemberMs.builder().build());
 
         // VO로 변환
-        BeanUtils.copyProperties(memberMs, memberVo);
+        MemberMsVO memberVo = MemberMsVO.builder()
+                .memberName(memberMs.get().getMemberName())
+                .memberEmail(memberMs.get().getMemberEmail())
+                .memberAddress(memberMs.get().getMemberAddress())
+                .memberRoadAddress(memberMs.get().getMemberRoadAddress())
+                .memberPhoneNumber(memberMs.get().getMemberPhoneNumber())
+                .build();
 
-        return memberMsVO;
+
+        return memberVo;
     }
 
     /**
@@ -86,7 +97,22 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        MemberMs member = memberMsRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일과 일치하는 계정이 없습니다."));
+
+        Collection<AuthMsVO> authorities = new ArrayList<>();
+
+        for (AuthMs authM : member.getAuthMs()) {
+            authorities.add(new AuthMsVO(authM.getAuthType()));
+        }
+
+        MemberMsVO userContext = MemberMsVO.builder()
+                .memberId(member.getUserId())
+                .memberPw(member.getMemberPw())
+                .authorities(authorities)
+                .build();
+
+        return new MemberDetails(userContext);
     }
 }

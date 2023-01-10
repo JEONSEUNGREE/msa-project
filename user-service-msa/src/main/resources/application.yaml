@@ -2,6 +2,8 @@ server:
   port: 50001
 
 spring:
+  jwt:
+    secret: "msa-project"
   application:
     name: user-service-msa
   datasource:
@@ -22,3 +24,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+group:
+  name: "USER_NAME"
