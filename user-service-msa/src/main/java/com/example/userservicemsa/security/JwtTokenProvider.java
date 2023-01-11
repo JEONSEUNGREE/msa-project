@@ -1,5 +1,6 @@
 package com.example.userservicemsa.security;
 
+import com.example.userservicemsa.user.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -26,10 +27,10 @@ public class JwtTokenProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
 
-    private final UserDetailsService userDetailsService;
+    private final MemberService memberService;
 
-    public JwtTokenProvider(@Qualifier("userUserDetailsService") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public JwtTokenProvider(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @PostConstruct
@@ -52,7 +53,7 @@ public class JwtTokenProvider {
 
     // 인증 성공시 SecurityContextHolder에 저장할 Authentication 객체 생성
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = memberService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

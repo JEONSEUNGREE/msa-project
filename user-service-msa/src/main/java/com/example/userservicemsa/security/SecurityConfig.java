@@ -35,6 +35,10 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(jwtProvider, cookieUtil);
     }
 
+    AuthenticationFilter authenticationFilter() {
+        return new AuthenticationFilter();
+    }
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().mvcMatchers(SecurityConstant.resourceArray);
@@ -52,7 +56,6 @@ public class SecurityConfig {
         return http.authorizeRequests()
                 .antMatchers(SecurityConstant.permitAllArray).permitAll()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter(jwtProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(((request, response, authException) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());

@@ -46,9 +46,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         if(token != null && !jwtProvider.isTokenExpired(token)) {
             try {
                 String emailFromToken = jwtProvider.getEmailFromToken(token);
-                authenticate = jwtProvider
-                        .authenticate(new UsernamePasswordAuthenticationToken(emailFromToken, ""));
-
+                authenticate = jwtProvider.authenticate(new UsernamePasswordAuthenticationToken(emailFromToken, ""));
                 SecurityContextHolder.getContext().setAuthentication(authenticate);
             } catch(Exception e) {
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
