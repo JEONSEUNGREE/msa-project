@@ -1,18 +1,26 @@
 server:
-  port: 50001
+  port: 0
 
 eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      default-zone: http://localhost:8761/eureka
+      defaultZone: http://127.0.0.1:8761/eureka
 
 spring:
-  jwt:
-    secret: "msa-project"
+  rabbitmq:
+    host: 127.0.0.1
+    port: 1001
+    username: admin
+    password: admin
+
   application:
-    name: user-service-msa
+    name: user-service
+  profiles:
+    active: local
   datasource:
     url: jdbc:mysql://172.72.0.1:1003/msa?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
     username: root
@@ -32,5 +40,8 @@ spring:
       hibernate:
         format_sql: true
 
-group:
-  name: "USER_NAME"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh

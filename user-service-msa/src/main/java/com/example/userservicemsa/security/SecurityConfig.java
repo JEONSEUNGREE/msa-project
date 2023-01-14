@@ -1,26 +1,25 @@
 package com.example.userservicemsa.security;
 
+import com.example.userservicemsa.constants.SecurityConstant;
 import com.example.userservicemsa.exception.ExceptionResponse;
+import com.example.userservicemsa.securityUtil.CookieUtil;
+import com.example.userservicemsa.user.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.protocol.HTTP;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.GenericFilterBean;
 
 import java.util.Date;
 
@@ -35,8 +34,8 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(jwtProvider, cookieUtil);
     }
 
-    AuthenticationFilter authenticationFilter() {
-        return new AuthenticationFilter();
+    JwtLoginFilter jwtLoginFilter(JwtProvider jwtProvider, CookieUtil cookieUtil, MemberService memberService) {
+        return new JwtLoginFilter(jwtProvider, cookieUtil, memberService);
     }
 
     @Bean
@@ -45,17 +44,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider jwtProvider, CookieUtil cookieUtil) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider jwtProvider, CookieUtil cookieUtil, MemberService memberService) throws Exception {
+
         http.httpBasic().disable()
                 .formLogin().disable()
                 .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-
         return http.authorizeRequests()
                 .antMatchers(SecurityConstant.permitAllArray).permitAll()
+                .antMatchers(SecurityConstant.authenticationAllArray).authenticated()
                 .and()
+                .addFilterAt(jwtLoginFilter(jwtProvider, cookieUtil, memberService),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(jwtProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(((request, response, authException) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -64,6 +66,8 @@ public class SecurityConfig {
                             response.getOutputStream(),
                             ExceptionResponse.builder()
                                     .message("FAIL")
+                                    .details("UNKNOWN USER")
+                                    .errorCode("AUTHENTICATION ERROR")
                                     .timestamp(new Date())
                                     .build()
                     );
@@ -75,11 +79,14 @@ public class SecurityConfig {
                             response.getOutputStream(),
                             ExceptionResponse.builder()
                                     .message("FAIL")
+                                    .details("ACCESS DENIED")
                                     .timestamp(new Date())
                                     .build()
                     );
                 })).and().build();
     }
+
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

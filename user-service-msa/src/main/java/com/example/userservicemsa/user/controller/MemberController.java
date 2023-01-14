@@ -2,11 +2,9 @@ package com.example.userservicemsa.user.controller;
 
 
 import com.example.userservicemsa.constants.CommonConstants;
-import com.example.userservicemsa.servletutil.JsonResponse;
+import com.example.userservicemsa.servletUtil.JsonResponse;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping(value = "/member")
+//@RequestMapping("/user-service")
 public class MemberController {
 
     private MemberService memberService;
@@ -24,9 +22,9 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<EntityModel<JsonResponse>> main() {
-        return ResponseEntity.ok().build();
+    @GetMapping("/home")
+    public String main() {
+        return "testHome";
     }
 
     @PostMapping(value = "/signup", headers = "X-API-VERSION=1")

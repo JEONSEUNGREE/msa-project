@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface MemberMsRepository extends JpaRepository<MemberMs, Long> {
 
     public Optional<MemberMs> findByUserId(String userId);
-
 }

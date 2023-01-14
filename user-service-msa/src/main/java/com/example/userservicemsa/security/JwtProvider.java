@@ -7,35 +7,38 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.example.userservicemsa.user.service.MemberService;
-import com.example.userservicemsa.user.service.MemberServiceImpl;
-import com.example.userservicemsa.user.vo.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Map;
 
-
 @Component
 @RequiredArgsConstructor
 public class JwtProvider implements AuthenticationProvider {
 
-    private static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 120;
-    private static final long REFRESH_TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 48;
-
-    private final MemberServiceImpl memberService;
-
-
-    @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    @Value("${group.name}")
+    @Value("${spring.application.name}")
     private String ISSUER;
+
+    @Value("${token.expiration_time}")
+    private long TOKEN_VALIDATION_SECOND;
+
+    @Value("${token.expiration_time}")
+    private long REFRESH_TOKEN_VALIDATION_TIME;
+
+    private final MemberService memberService;
 
     private Algorithm getSigningKey(String secretKey) {
         return Algorithm.HMAC256(secretKey);
@@ -45,9 +48,9 @@ public class JwtProvider implements AuthenticationProvider {
         return token.getClaims();
     }
 
-    public String getEmailFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         DecodedJWT verifiedToken = validateToken(token);
-        return verifiedToken.getClaim("email").asString();
+        return verifiedToken.getClaim("userId").asString();
     }
 
     private JWTVerifier getTokenValidator() {
@@ -69,6 +72,7 @@ public class JwtProvider implements AuthenticationProvider {
         return JWT.create()
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expireTime))
+                .withClaim("userId", payload.get("userId"))
                 .withPayload(payload)
                 .withIssuer(ISSUER)
                 .sign(getSigningKey(SECRET_KEY));
@@ -90,7 +94,7 @@ public class JwtProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        MemberDetails userDetails = (MemberDetails) memberService.loadUserByUsername
+        UserDetails userDetails = memberService.loadUserByUsername
                 ((String) authentication.getPrincipal());
 
         return new UsernamePasswordAuthenticationToken(

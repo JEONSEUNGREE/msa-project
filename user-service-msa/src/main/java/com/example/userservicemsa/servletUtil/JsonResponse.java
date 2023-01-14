@@ -1,10 +1,8 @@
-package com.example.userservicemsa.servletutil;
+package com.example.userservicemsa.servletUtil;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 
 @Builder

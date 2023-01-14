@@ -3,16 +3,21 @@ package com.example.userservicemsa.user.entity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity(name = "MEMBER_MS")
 @Getter
 @Builder
-public class MemberMs {
+public class MemberMs implements UserDetails {
 
     /**
      * 기본키
@@ -85,11 +90,47 @@ public class MemberMs {
     /* 양방향 매핑 */
 
     // 히스토리키
-    @OneToMany(mappedBy = "memberMs")
+    @OneToMany(mappedBy = "memberMs", fetch = FetchType.LAZY)
     private List<HistoryMs> historyMs = new ArrayList<>();
 
     // 권한
-    @OneToMany(mappedBy = "memberMs")
-    private List<AuthMs> AuthMs = new ArrayList<>();
+    @OneToMany(mappedBy = "memberMs", fetch = FetchType.LAZY)
+    private List<AuthMs> authMs = new ArrayList<>();
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authMs.stream()
+                .map(auth -> new SimpleGrantedAuthority(auth.getAuthType()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return memberPw;
+    }
+
+    @Override
+    public String getUsername() {
+        return userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
