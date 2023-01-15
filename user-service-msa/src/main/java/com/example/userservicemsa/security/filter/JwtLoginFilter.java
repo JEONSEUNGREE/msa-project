@@ -68,7 +68,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             payload.put("userId", memberInfo.getUserId());
             response.addHeader("account_token", jwtProvider.generateToken(payload));
         } catch (Exception e) {
-            throw new UserNotFoundException("사용자를 찾을수 없습니다");
+            throw new UserNotFoundException("사용자를 찾을 수 없습니다");
         }
     }
 }

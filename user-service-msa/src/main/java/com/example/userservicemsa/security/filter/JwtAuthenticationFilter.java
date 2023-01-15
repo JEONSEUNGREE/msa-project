@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtProvider;
+    private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
     @Override
@@ -45,9 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = req.getHeader("account_token");
         }
 
-        if(token != null && !jwtProvider.isTokenExpired(token)) {
+        if(token != null && !jwtUtil.isTokenExpired(token)) {
             try {
-                MemberMsVO memberInfo = jwtProvider.getUserIdFromToken(token);
+                MemberMsVO memberInfo = jwtUtil.getUserIdFromToken(token);
 
                 Authentication authenticate = authenticationManager.
                         authenticate(new UsernamePasswordAuthenticationToken(memberInfo.getUserId(), "account_token"));
