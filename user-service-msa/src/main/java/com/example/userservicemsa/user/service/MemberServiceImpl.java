@@ -7,18 +7,20 @@ import com.example.userservicemsa.user.entity.MemberMs;
 import com.example.userservicemsa.user.repository.AuthMsRepository;
 import com.example.userservicemsa.user.repository.HistoryMsRepository;
 import com.example.userservicemsa.user.repository.MemberMsRepository;
-import com.example.userservicemsa.user.vo.AuthMsVO;
 import com.example.userservicemsa.user.vo.MemberMsVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private MemberMsRepository memberMsRepository;
@@ -27,12 +29,16 @@ public class MemberServiceImpl implements MemberService {
 
     private HistoryMsRepository historyMsRepository;
 
+    private BCryptPasswordEncoder passwordEncoder;
+
     public MemberServiceImpl(MemberMsRepository memberMsRepository,
                              AuthMsRepository authMsRepository,
-                             HistoryMsRepository historyMsRepository) {
+                             HistoryMsRepository historyMsRepository,
+                             BCryptPasswordEncoder passwordEncoder) {
         this.memberMsRepository = memberMsRepository;
         this.authMsRepository = authMsRepository;
         this.historyMsRepository = historyMsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -50,6 +56,8 @@ public class MemberServiceImpl implements MemberService {
         // VO로 변환
         MemberMsVO memberVo = MemberMsVO.builder()
                 .memberName(memberMs.get().getMemberName())
+                .userId(memberMs.get().getUserId())
+                .memberPw(memberMs.get().getMemberPw().toString())
                 .memberEmail(memberMs.get().getMemberEmail())
                 .memberAddress(memberMs.get().getMemberAddress())
                 .memberRoadAddress(memberMs.get().getMemberRoadAddress())
@@ -66,14 +74,14 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public boolean signupMember(SignupDTO signupDTO) {
-
-        try {
+        try
+        {
             MemberMs memberInfo = MemberMs.builder()
                     .userId(signupDTO.getId())
                     .memberEmail(signupDTO.getEmail())
                     .memberName(signupDTO.getName())
                     .memberPhoneNumber(signupDTO.getPhoneNum())
-                    .memberPw(signupDTO.getPw())
+                    .memberPw(passwordEncoder.encode(signupDTO.getPw()))
                     .build();
 
             AuthMs authInfo = AuthMs.builder()
@@ -86,6 +94,7 @@ public class MemberServiceImpl implements MemberService {
             memberMsRepository.save(memberInfo);
             authMsRepository.save(authInfo);
         } catch (Exception e) {
+            log.info(e.getMessage());
             return false;
         }
         return true;
@@ -93,7 +102,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        return memberMsRepository.findByUserId(userId)
+        MemberMs memberMs = memberMsRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+        // 권한설정
+        return new User(memberMs.getUserId(), memberMs.getMemberPw(), new ArrayList<>());
     }
 }

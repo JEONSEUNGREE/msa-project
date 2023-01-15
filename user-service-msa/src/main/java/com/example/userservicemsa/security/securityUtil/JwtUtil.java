@@ -1,4 +1,4 @@
-package com.example.userservicemsa.security;
+package com.example.userservicemsa.security.securityUtil;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,17 +7,9 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.example.userservicemsa.user.service.MemberService;
+import com.example.userservicemsa.user.vo.MemberMsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,8 +17,9 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class JwtProvider implements AuthenticationProvider {
+public class JwtUtil {
 
+    @Value("${token.secret}")
     private String SECRET_KEY;
 
     @Value("${spring.application.name}")
@@ -48,9 +41,12 @@ public class JwtProvider implements AuthenticationProvider {
         return token.getClaims();
     }
 
-    public String getUserIdFromToken(String token) {
+    public MemberMsVO getUserIdFromToken(String token) throws Exception {
         DecodedJWT verifiedToken = validateToken(token);
-        return verifiedToken.getClaim("userId").asString();
+        MemberMsVO memberInfo = MemberMsVO.builder()
+                .userId(verifiedToken.getClaim("userId").asString())
+                .build();
+        return memberService.getMemberInfo(memberInfo);
     }
 
     private JWTVerifier getTokenValidator() {
@@ -90,21 +86,5 @@ public class JwtProvider implements AuthenticationProvider {
         } catch (JWTVerificationException e) {
             return true;
         }
-    }
-
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UserDetails userDetails = memberService.loadUserByUsername
-                ((String) authentication.getPrincipal());
-
-        return new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return false;
     }
 }

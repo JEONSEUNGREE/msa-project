@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,6 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Configuration error: found multiple declarations of @BootstrapWith for test class 와 같은 에러 발생
 // @BootstrapWith 동일하게 선언되어있음
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "docs.api.com")
+// test property 설정
+@TestPropertySource(locations = "classpath:/application.yaml")
+// mock테스트시 security csrf 403에러 필터 제외
+@AutoConfigureMockMvc(addFilters=false)
 @Import(RestDocsConfiguration.class)
 class MemberControllerTest {
 
@@ -55,7 +61,7 @@ class MemberControllerTest {
                 .build();
         //when
         ResultActions result = this.mockMvc.perform(
-                post("/member/signup")
+                post("/signup")
                         .content(objectMapper.writeValueAsString(signupDTO))
                         .header("X-API-VERSION", 1)
                         .contentType(MediaType.APPLICATION_JSON)

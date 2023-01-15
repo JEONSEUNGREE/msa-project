@@ -1,40 +1,37 @@
-package com.example.userservicemsa.security;
+package com.example.userservicemsa.security.filter;
 
 
-import com.example.userservicemsa.securityUtil.CookieUtil;
+import com.example.userservicemsa.security.securityUtil.JwtUtil;
+import com.example.userservicemsa.security.securityUtil.CookieUtil;
+import com.example.userservicemsa.user.vo.MemberMsVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtProvider;
     private final CookieUtil cookieUtil;
 
-
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         String token = null;
-        Authentication authenticate;
 
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
@@ -45,15 +42,16 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         if (token == null) {
-            token = req.getHeader("authentication");
+            token = req.getHeader("account_token");
         }
 
         if(token != null && !jwtProvider.isTokenExpired(token)) {
             try {
-                String userId = jwtProvider.getUserIdFromToken(token);
-                authenticate = jwtProvider.authenticate(new UsernamePasswordAuthenticationToken(userId, ""));
+                MemberMsVO memberInfo = jwtProvider.getUserIdFromToken(token);
+
+                Authentication authenticate = authenticationManager.
+                        authenticate(new UsernamePasswordAuthenticationToken(memberInfo.getUserId(), "account_token"));
                 SecurityContextHolder.getContext().setAuthentication(authenticate);
-                chain.doFilter(request, response);
             } catch(Exception e) {
                 onError(req, res);
             }

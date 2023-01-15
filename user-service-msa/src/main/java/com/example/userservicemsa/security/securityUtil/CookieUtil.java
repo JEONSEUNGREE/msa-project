@@ -1,4 +1,4 @@
-package com.example.userservicemsa.securityUtil;
+package com.example.userservicemsa.security.securityUtil;
 
 import org.springframework.stereotype.Component;
 

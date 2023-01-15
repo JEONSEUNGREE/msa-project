@@ -1,8 +1,6 @@
 package com.example.userservicemsa.user.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +15,8 @@ import java.util.stream.Collectors;
 @Entity(name = "MEMBER_MS")
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberMs implements UserDetails {
 
     /**
@@ -91,14 +91,15 @@ public class MemberMs implements UserDetails {
 
     // 히스토리키
     @OneToMany(mappedBy = "memberMs", fetch = FetchType.LAZY)
-    private List<HistoryMs> historyMs = new ArrayList<>();
+    private List<HistoryMs> historyMs;
 
     // 권한
     @OneToMany(mappedBy = "memberMs", fetch = FetchType.LAZY)
-    private List<AuthMs> authMs = new ArrayList<>();
+    private List<AuthMs> authMs;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        authMs = new ArrayList<>();
         return this.authMs.stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuthType()))
                 .collect(Collectors.toList());
@@ -116,21 +117,21 @@ public class MemberMs implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

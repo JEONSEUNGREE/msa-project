@@ -23,18 +23,31 @@ public class MemberController {
     }
 
     @GetMapping("/home")
-    public String main() {
-        return "testHome";
+    public ResponseEntity<JsonResponse> main() {
+        JsonResponse success = JsonResponse.builder()
+                .status(HttpStatus.OK)
+                .msg("WELCOME HOME")
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(success);
     }
 
     @PostMapping(value = "/signup", headers = "X-API-VERSION=1")
     public ResponseEntity<EntityModel<JsonResponse>> signup(@RequestBody(required = true) SignupDTO signupDTO) {
-        JsonResponse success = JsonResponse.builder()
-                .status(HttpStatus.CREATED)
-                .msg(CommonConstants.SUCCESS)
-                .build();
+        HttpStatus status = HttpStatus.CREATED;
+        String msg = CommonConstants.SUCCESS;
+        boolean isSignup = false;
 
-        memberService.signupMember(signupDTO);
+        isSignup = memberService.signupMember(signupDTO);
+
+        if (!isSignup) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            msg = CommonConstants.FAIL;
+        }
+
+        JsonResponse success = JsonResponse.builder()
+                .status(status)
+                .msg(msg)
+                .build();
 
         EntityModel<JsonResponse> response = EntityModel.of(success);
         response.add(linkTo(methodOn(MemberController.class).main()).withRel("main"));

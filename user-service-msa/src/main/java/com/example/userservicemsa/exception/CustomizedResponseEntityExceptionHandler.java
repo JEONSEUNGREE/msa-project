@@ -3,6 +3,7 @@ package com.example.userservicemsa.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,5 +57,18 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 .build();
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // UserNotFound Exception
+    @ExceptionHandler(JwtBadCredentialsException.class)
+    public final ResponseEntity<Object> jwtBadCredentialException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.
+                builder()
+                .message(ex.getMessage())
+                .timestamp(new Date())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 }
