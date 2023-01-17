@@ -2,6 +2,7 @@ package com.example.userservicemsa.user.controller;
 
 
 import com.example.userservicemsa.constants.CommonConstants;
+import com.example.userservicemsa.interceptor.annotation.CurrentUser;
 import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.servletUtil.JsonResponse;
 import com.example.userservicemsa.user.dto.SignupDTO;
@@ -25,7 +26,7 @@ public class MemberController {
 
     @LoginCheck
     @GetMapping("/home")
-    public ResponseEntity<JsonResponse> main() {
+    public ResponseEntity<JsonResponse> main(@CurrentUser String email) {
         JsonResponse success = JsonResponse.builder()
                 .status(HttpStatus.OK)
                 .msg("WELCOME HOME")
@@ -52,7 +53,7 @@ public class MemberController {
                 .build();
 
         EntityModel<JsonResponse> response = EntityModel.of(success);
-        response.add(linkTo(methodOn(MemberController.class).main()).withRel("main"));
+        response.add(linkTo(methodOn(MemberController.class).main("email")).withRel("main"));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
