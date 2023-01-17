@@ -59,6 +59,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtProvider, CookieUtil cookieUtil, MemberService memberService) throws Exception {
 
+
         http.httpBasic().disable()
                 .formLogin().disable()
                 .cors().disable()

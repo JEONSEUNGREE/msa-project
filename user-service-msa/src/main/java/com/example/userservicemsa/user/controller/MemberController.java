@@ -2,6 +2,7 @@ package com.example.userservicemsa.user.controller;
 
 
 import com.example.userservicemsa.constants.CommonConstants;
+import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.servletUtil.JsonResponse;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.service.MemberService;
@@ -22,6 +23,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @LoginCheck
     @GetMapping("/home")
     public ResponseEntity<JsonResponse> main() {
         JsonResponse success = JsonResponse.builder()

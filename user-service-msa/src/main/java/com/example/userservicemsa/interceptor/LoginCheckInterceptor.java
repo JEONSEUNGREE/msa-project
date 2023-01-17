@@ -4,6 +4,7 @@ import com.example.userservicemsa.exception.UserNotFoundException;
 import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.HandlerMethod;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
+@Configuration
 @RequiredArgsConstructor
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
@@ -34,6 +35,5 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         return true;
-
     }
 }
