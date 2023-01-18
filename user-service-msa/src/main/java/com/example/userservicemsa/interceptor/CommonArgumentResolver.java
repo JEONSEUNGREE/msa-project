@@ -19,7 +19,6 @@ public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final MemberService memberService;
 
-
     // 어노테이션 존재 여부 확인
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
