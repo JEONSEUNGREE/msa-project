@@ -1,4 +1,4 @@
-package com.example.userservicemsa.servletUtil;
+package com.example.commonsource.response;
 
 import lombok.Builder;
 import lombok.Getter;

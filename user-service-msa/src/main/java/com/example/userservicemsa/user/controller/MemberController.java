@@ -1,11 +1,11 @@
 package com.example.userservicemsa.user.controller;
 
 
-import com.example.userservicemsa.constants.CommonConstants;
+import com.example.commonsource.constant.CommonConstants;
+import com.example.commonsource.response.JsonResponse;
 import com.example.userservicemsa.interceptor.annotation.CurrentUser;
 import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.interceptor.annotation.VersionCheck;
-import com.example.userservicemsa.servletUtil.JsonResponse;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.service.MemberService;
 import org.springframework.hateoas.EntityModel;

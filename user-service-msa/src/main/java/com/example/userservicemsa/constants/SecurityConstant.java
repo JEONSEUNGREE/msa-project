@@ -2,7 +2,7 @@ package com.example.userservicemsa.constants;
 
 import com.example.userservicemsa.security.SecurityConfig;
 
-public class  SecurityConstant {
+public class SecurityConstant {
     /**
      * Resource 대상
      * @see SecurityConfig

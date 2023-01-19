@@ -1,7 +1,7 @@
 package com.example.userservicemsa.security;
 
+import com.example.commonsource.response.ExceptionResponse;
 import com.example.userservicemsa.constants.SecurityConstant;
-import com.example.userservicemsa.exception.ExceptionResponse;
 import com.example.userservicemsa.security.filter.JwtAuthenticationFilter;
 import com.example.userservicemsa.security.filter.JwtLoginFilter;
 import com.example.userservicemsa.security.provider.JwtAuthenticationProvider;
