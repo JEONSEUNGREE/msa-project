@@ -33,6 +33,7 @@ public class CommonInterceptor implements HandlerInterceptor {
         /* 버전 체크 */
         VersionCheck versionCheck = handlerMethod.getMethodAnnotation(VersionCheck.class);
 
+
         if (loginCheck != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) {
             throw new UserNotFoundException("LOGIN PLEASE");
         }
