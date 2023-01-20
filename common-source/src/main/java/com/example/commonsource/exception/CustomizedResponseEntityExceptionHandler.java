@@ -1,4 +1,4 @@
-package com.example.userservicemsa.exception;
+package com.example.commonsource.exception;
 
 import com.example.commonsource.response.ExceptionResponse;
 import org.jetbrains.annotations.NotNull;

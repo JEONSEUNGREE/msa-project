@@ -1,7 +1,7 @@
-package com.example.userservicemsa.interceptor;
+package com.example.orderservice.interceptor;
 
-import com.example.commonsource.exception.ApiException;
-import com.example.commonsource.exception.UserNotFoundException;
+import com.example.userservicemsa.exception.ApiException;
+import com.example.userservicemsa.exception.UserNotFoundException;
 import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.interceptor.annotation.VersionCheck;
 import org.jetbrains.annotations.NotNull;
@@ -37,14 +37,12 @@ public class CommonInterceptor implements HandlerInterceptor {
             throw new UserNotFoundException("LOGIN PLEASE");
         }
 
-        if (versionCheck == null) {
-            return true;
+        if (versionCheck != null) {
+            version = request.getHeader(versionCheck.versionKey());
         }
 
-        version = request.getHeader(versionCheck.versionKey());
-
         if (version == null) {
-            throw new com.example.commonsource.exception.ApiException("API VERSION IS REQUIRED");
+            throw new ApiException("API VERSION IS REQUIRED");
         }
 
         if (!version.equals(versionCheck.versionValue())) {
