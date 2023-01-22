@@ -1,4 +1,4 @@
-package com.example.userservicemsa;
+package com.example.orderservice;
 
 import org.springframework.boot.test.autoconfigure.restdocs.RestDocsMockMvcConfigurationCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;

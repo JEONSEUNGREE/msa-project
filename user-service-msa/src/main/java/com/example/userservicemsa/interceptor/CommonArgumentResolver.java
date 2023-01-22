@@ -17,8 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
-
     // 어노테이션 존재 여부 확인
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -31,6 +29,9 @@ public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   @NotNull NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return LoginInfo.builder()
+                .userId((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .jwtToken(webRequest.getHeader("account_token"))
+                .build();
     }
 }

@@ -1,6 +1,10 @@
 package com.example.userservicemsa.user.service;
 
+import com.example.commonsource.orderDto.OrderResultDto;
+import com.example.commonsource.response.JsonResponse;
+import com.example.userservicemsa.client.OrderServiceClient;
 import com.example.userservicemsa.exception.UserNotFoundException;
+import com.example.userservicemsa.interceptor.annotation.CurrentUser;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.entity.AuthMs;
 import com.example.userservicemsa.user.entity.MemberMs;
@@ -9,15 +13,15 @@ import com.example.userservicemsa.user.repository.HistoryMsRepository;
 import com.example.userservicemsa.user.repository.MemberMsRepository;
 import com.example.userservicemsa.user.vo.MemberMsVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
+import java.net.http.HttpHeaders;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -31,14 +35,18 @@ public class MemberServiceImpl implements MemberService {
 
     private BCryptPasswordEncoder passwordEncoder;
 
+    private OrderServiceClient orderServiceClient;
+
     public MemberServiceImpl(MemberMsRepository memberMsRepository,
                              AuthMsRepository authMsRepository,
                              HistoryMsRepository historyMsRepository,
-                             BCryptPasswordEncoder passwordEncoder) {
+                             BCryptPasswordEncoder passwordEncoder,
+                             OrderServiceClient orderServiceClient) {
         this.memberMsRepository = memberMsRepository;
         this.authMsRepository = authMsRepository;
         this.historyMsRepository = historyMsRepository;
         this.passwordEncoder = passwordEncoder;
+        this.orderServiceClient = orderServiceClient;
     }
 
     /**
@@ -98,6 +106,21 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 유저 주문 정보
+     * @return
+     */
+    @Override
+    public List<OrderResultDto> getOrderList(String account_token) {
+        EntityModel<JsonResponse> orderServiceResponse = orderServiceClient.getOrderList(account_token);
+
+        if (Objects.requireNonNull(orderServiceResponse.getContent()).getResponseData() == null) {
+            return (List<OrderResultDto>) orderServiceResponse.getContent().getResponseData();
+        }
+
+        return null;
     }
 
     @Override

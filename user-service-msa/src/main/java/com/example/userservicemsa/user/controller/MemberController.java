@@ -2,7 +2,9 @@ package com.example.userservicemsa.user.controller;
 
 
 import com.example.commonsource.constant.CommonConstants;
+import com.example.commonsource.orderDto.OrderResultDto;
 import com.example.commonsource.response.JsonResponse;
+import com.example.userservicemsa.interceptor.LoginInfo;
 import com.example.userservicemsa.interceptor.annotation.CurrentUser;
 import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.interceptor.annotation.VersionCheck;
@@ -13,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.bouncycastle.asn1.cmc.CMCStatus.success;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
@@ -25,10 +31,9 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @LoginCheck
     @VersionCheck(versionKey = "API-VERSION", versionValue = "1")
     @GetMapping("/home")
-    public ResponseEntity<JsonResponse> main(@CurrentUser String email) {
+    public ResponseEntity<JsonResponse> main() {
         JsonResponse success = JsonResponse.builder()
                 .status(HttpStatus.OK)
                 .msg("WELCOME HOME")
@@ -55,8 +60,33 @@ public class MemberController {
                 .build();
 
         EntityModel<JsonResponse> response = EntityModel.of(success);
-        response.add(linkTo(methodOn(MemberController.class).main("email")).withRel("main"));
+        response.add(linkTo(methodOn(MemberController.class).main()).withRel("main"));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @LoginCheck
+    @GetMapping
+    public ResponseEntity<EntityModel<JsonResponse>> getOneUserOrderList(@CurrentUser LoginInfo loginInfo) {
+        HttpStatus status = HttpStatus.OK;
+        String msg = CommonConstants.SUCCESS;
+
+
+        List<OrderResultDto> orderList = memberService.getOrderList(loginInfo.getJwtToken());
+
+        if (orderList == null) {
+            orderList = new ArrayList<>();
+        }
+
+        JsonResponse success = JsonResponse.builder()
+                .status(status)
+                .msg(msg)
+                .responseData(orderList)
+                .build();
+
+        EntityModel<JsonResponse> response = EntityModel.of(success);
+        response.add(linkTo(methodOn(MemberController.class).main()).withRel("main"));
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

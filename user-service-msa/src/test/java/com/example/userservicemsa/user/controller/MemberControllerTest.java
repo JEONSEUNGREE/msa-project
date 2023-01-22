@@ -59,6 +59,7 @@ class MemberControllerTest {
                 .pw("tory")
                 .phoneNum("01099827271")
                 .build();
+
         //when
         ResultActions result = this.mockMvc.perform(
                 post("/signup")
@@ -67,23 +68,13 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         );
-
         //then
         result.andExpect(status().isCreated())
-                .andDo(document("signup is success",
+                .andDo(document("Get user orderList is success",
                         getDocumentRequest(),
                         getDocumentResponse(),
-//                        pathParameters(
-//                                parameterWithName("id").description("아이디")
-//                        ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                                fieldWithPath("id").type(JsonFieldType.STRING).description("아이디"),
-                                fieldWithPath("pw").type(JsonFieldType.STRING).description("패스워드"),
-                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("핸드폰번호").optional(),
-                                fieldWithPath("birthInfo").type(JsonFieldType.STRING).description("주소").optional(),
-                                fieldWithPath("address").type(JsonFieldType.STRING).description("생년월일").optional()
+                                fieldWithPath("header").type(JsonFieldType.STRING).description("JWT TOKEN")
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),
