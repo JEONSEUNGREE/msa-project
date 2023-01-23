@@ -66,16 +66,19 @@ public class MemberController {
     }
 
     @LoginCheck
-    @GetMapping
+    @GetMapping(value = "/getUserOrderList")
     public ResponseEntity<EntityModel<JsonResponse>> getOneUserOrderList(@CurrentUser LoginInfo loginInfo) {
+
         HttpStatus status = HttpStatus.OK;
-        String msg = CommonConstants.SUCCESS;
+        String msg = CommonConstants.ORDERED_LIST_NOT_EXIST;
 
 
         List<OrderResultDto> orderList = memberService.getOrderList(loginInfo.getJwtToken());
 
         if (orderList == null) {
             orderList = new ArrayList<>();
+        } else {
+            msg = CommonConstants.ORDERED_LIST_EXIST;
         }
 
         JsonResponse success = JsonResponse.builder()

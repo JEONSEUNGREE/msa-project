@@ -1,5 +1,6 @@
 package com.example.userservicemsa.user.service;
 
+import com.example.commonsource.constant.CommonConstants;
 import com.example.commonsource.orderDto.OrderResultDto;
 import com.example.commonsource.response.JsonResponse;
 import com.example.userservicemsa.client.OrderServiceClient;
@@ -108,15 +109,17 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+
     /**
      * 유저 주문 정보
+     * @param account_token
      * @return
      */
     @Override
     public List<OrderResultDto> getOrderList(String account_token) {
         EntityModel<JsonResponse> orderServiceResponse = orderServiceClient.getOrderList(account_token);
 
-        if (Objects.requireNonNull(orderServiceResponse.getContent()).getResponseData() == null) {
+        if (CommonConstants.ORDERED_LIST_EXIST.equals(orderServiceResponse.getContent().getMsg())) {
             return (List<OrderResultDto>) orderServiceResponse.getContent().getResponseData();
         }
 

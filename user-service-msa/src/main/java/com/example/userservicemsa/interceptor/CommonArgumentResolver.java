@@ -5,6 +5,7 @@ import com.example.userservicemsa.user.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -29,8 +30,10 @@ public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   @NotNull NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+
         return LoginInfo.builder()
-                .userId((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .userId(loggedInUser.getName())
                 .jwtToken(webRequest.getHeader("account_token"))
                 .build();
     }
