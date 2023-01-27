@@ -74,7 +74,13 @@ class MemberControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("header").type(JsonFieldType.STRING).description("JWT TOKEN")
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("id").type(JsonFieldType.STRING).description("아이디"),
+                                fieldWithPath("pw").type(JsonFieldType.STRING).description("패스워드"),
+                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("핸드폰번호").optional(),
+                                fieldWithPath("birthInfo").type(JsonFieldType.STRING).description("주소").optional(),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("생년월일").optional()
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),

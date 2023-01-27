@@ -1,4 +1,4 @@
-package com.example.userservicemsa.interceptor.annotation;
+package com.example.orderservice.interceptor.annotation;
 
 
 import java.lang.annotation.ElementType;

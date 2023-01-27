@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoGeneratorSettingsState">
+    <option name="generateDefaultValue" value="true" />
+    <option name="ignoredFields">
+      <set>
+        <option value="" />
+      </set>
+    </option>
+    <option name="moduleName" value="user-service-msa" />
+    <option name="moduleNameToSettings">
+      <map>
+        <entry key="user-service-msa">
+          <value>
+            <ModuleSettings>
+              <option name="controllerParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+              <option name="dtoPackageName" value="com.example.userservicemsa.user.dto" />
+              <option name="dtoParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+              <option name="entityPackageName" value="com.example.userservicemsa.user.entity" />
+              <option name="entityParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+              <option name="generateRepository" value="false" />
+              <option name="mapperXmlParentDirectory" value="$PROJECT_DIR$/src/main/resources" />
+              <option name="repositoryPackageName" value="com.example.userservicemsa.user.repository" />
+              <option name="repositoryParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+              <option name="servicePackageName" value="com.example.userservicemsa.user.service" />
+              <option name="serviceParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+              <option name="voPackageName" value="com.example.userservicemsa.user.vo" />
+              <option name="voParentDirectory" value="$PROJECT_DIR$/src/main/java" />
+            </ModuleSettings>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="serializable" value="false" />
+  </component>
+</project>

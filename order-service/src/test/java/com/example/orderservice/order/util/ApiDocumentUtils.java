@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.orderservice.order.util;
 
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;

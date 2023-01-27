@@ -1,10 +1,10 @@
-package com.example.commonscource;
+package com.example.orderservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CommonScourceApplicationTests {
+class OrderServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

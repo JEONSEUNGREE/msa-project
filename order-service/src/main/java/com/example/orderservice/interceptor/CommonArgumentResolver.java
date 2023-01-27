@@ -1,10 +1,10 @@
-package com.example.userservicemsa.interceptor;
+package com.example.orderservice.interceptor;
 
-import com.example.userservicemsa.interceptor.annotation.CurrentUser;
-import com.example.userservicemsa.user.service.MemberService;
+import com.example.orderservice.interceptor.annotation.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -17,7 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
 
     // 어노테이션 존재 여부 확인
     @Override
@@ -31,6 +30,11 @@ public class CommonArgumentResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   @NotNull NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+
+        return LoginInfo.builder()
+                .userId(loggedInUser.getName())
+                .jwtToken(webRequest.getHeader("account_token"))
+                .build();
     }
 }

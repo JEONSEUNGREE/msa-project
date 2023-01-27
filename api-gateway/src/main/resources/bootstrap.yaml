@@ -2,4 +2,4 @@ spring:
   cloud:
     config:
       uri: http://127.0.0.1:10002
-      name: config-local
+      name: gateway-${spring.profiles.active}, config-${spring.profiles.active}

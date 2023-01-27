@@ -1,9 +1,9 @@
 package com.example.orderservice.interceptor;
 
-import com.example.userservicemsa.exception.ApiException;
-import com.example.userservicemsa.exception.UserNotFoundException;
-import com.example.userservicemsa.interceptor.annotation.LoginCheck;
-import com.example.userservicemsa.interceptor.annotation.VersionCheck;
+import com.example.commonsource.exception.ApiException;
+import com.example.commonsource.exception.UserNotFoundException;
+import com.example.orderservice.interceptor.annotation.LoginCheck;
+import com.example.orderservice.interceptor.annotation.VersionCheck;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class CommonInterceptor implements HandlerInterceptor {
         if(!( handler instanceof HandlerMethod )) {
             return true;
         }
-        // 어노테이션 타입 확인
+        /* 어노테이션 타입 확인 */
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         String version = null;
 
@@ -39,14 +39,12 @@ public class CommonInterceptor implements HandlerInterceptor {
 
         if (versionCheck != null) {
             version = request.getHeader(versionCheck.versionKey());
-        }
-
-        if (version == null) {
-            throw new ApiException("API VERSION IS REQUIRED");
-        }
-
-        if (!version.equals(versionCheck.versionValue())) {
-            throw new ApiException("API VERSION IS INVALID");
+            if (version == null) {
+                throw new ApiException("API VERSION IS REQUIRED");
+            }
+            if (!version.equals(versionCheck.versionValue())) {
+                throw new ApiException("API VERSION IS INVALID");
+            }
         }
         return true;
     }

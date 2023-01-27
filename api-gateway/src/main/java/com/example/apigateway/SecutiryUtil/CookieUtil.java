@@ -1,13 +1,12 @@
 package com.example.apigateway.SecutiryUtil;
 
+import io.netty.handler.codec.http.cookie.Cookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class CookieUtil {
-    public Cookie getCookie(HttpServletRequest req, String account_token) {
+    public Cookie getCookie(ServerHttpRequest req, String account_token) {
         return null;
     }
 }

@@ -6,8 +6,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.example.userservicemsa.user.service.MemberService;
-import com.example.userservicemsa.user.vo.MemberMsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,16 +20,14 @@ public class JwtUtil {
     @Value("${token.secret}")
     private String SECRET_KEY;
 
-    @Value("${spring.application.name}")
-    private String ISSUER;
+    /* todo 추후에 공통 config properties에 설정*/
+    private String ISSUER = "user-service";
 
     @Value("${token.expiration_time}")
     private long TOKEN_VALIDATION_SECOND;
 
     @Value("${token.expiration_time}")
     private long REFRESH_TOKEN_VALIDATION_TIME;
-
-    private final MemberService memberService;
 
     private Algorithm getSigningKey(String secretKey) {
         return Algorithm.HMAC256(secretKey);
@@ -41,12 +37,9 @@ public class JwtUtil {
         return token.getClaims();
     }
 
-    public MemberMsVO getUserIdFromToken(String token) throws Exception {
+    public String getUserIdFromToken(String token) throws Exception {
         DecodedJWT verifiedToken = validateToken(token);
-        MemberMsVO memberInfo = MemberMsVO.builder()
-                .userId(verifiedToken.getClaim("userId").asString())
-                .build();
-        return memberService.getMemberInfo(memberInfo);
+        return verifiedToken.getClaim("userId").asString();
     }
 
     private JWTVerifier getTokenValidator() {

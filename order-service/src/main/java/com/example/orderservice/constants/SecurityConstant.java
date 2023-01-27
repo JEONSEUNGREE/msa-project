@@ -1,6 +1,6 @@
-package com.example.userservicemsa.constants;
+package com.example.orderservice.constants;
 
-import com.example.userservicemsa.security.SecurityConfig;
+import com.example.orderservice.security.SecurityConfig;
 
 public class SecurityConstant {
     /**

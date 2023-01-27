@@ -1,11 +1,7 @@
-package com.example.eurekaserver;
+package com.example.eurekaserver.configController;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +18,14 @@ public class ControllerTest {
         this.env = env;
     }
 
-    @GetMapping(value = "/test")
+    @GetMapping(value = "/serverProperties")
     public ResponseEntity<JsonResponse> serverConfigInfo() {
         JsonResponse response = JsonResponse.builder()
                 .localServerPort(env.getProperty("local.server.port"))
-                .localServerPort(env.getProperty("token.port"))
-                .localServerPort(env.getProperty("token.secret"))
-                .localServerPort(env.getProperty("token.expiration_time"))
-                .localServerPort(env.getProperty("gateway.ip"))
+                .tokenSecret(env.getProperty("token.secret"))
+                .tokenExpirationTime(env.getProperty("token.expiration_time"))
+                .gatewayIp(env.getProperty("gateway.ip"))
                 .build();
-        return ResponseEntity.ok(response);
-    }
-
-    @Builder
-    static class JsonResponse {
-        private String localServerPort;
-        private String tokenSecret;
-        private String tokenExpirationTime;
-        private String gatewayIp;
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

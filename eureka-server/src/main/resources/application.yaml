@@ -1,0 +1,29 @@
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: discoveryservice
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: local
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 1001
+    username: admin
+    password: admin
+    stream:
+      name: config-bus
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh

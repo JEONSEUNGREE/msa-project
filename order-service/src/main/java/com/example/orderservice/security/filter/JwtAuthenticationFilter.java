@@ -1,9 +1,8 @@
-package com.example.userservicemsa.security.filter;
+package com.example.orderservice.security.filter;
 
 
-import com.example.userservicemsa.security.securityUtil.JwtUtil;
-import com.example.userservicemsa.security.securityUtil.CookieUtil;
-import com.example.userservicemsa.user.vo.MemberMsVO;
+import com.example.orderservice.security.securityUtil.CookieUtil;
+import com.example.orderservice.security.securityUtil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -24,7 +23,6 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
@@ -47,11 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(token != null && !jwtUtil.isTokenExpired(token)) {
             try {
-                MemberMsVO memberInfo = jwtUtil.getUserIdFromToken(token);
+                String userId = jwtUtil.getUserIdFromToken(token);
 
-                Authentication authenticate = authenticationManager.
-                        authenticate(new UsernamePasswordAuthenticationToken(memberInfo.getUserId(), "account_token"));
-                SecurityContextHolder.getContext().setAuthentication(authenticate);
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userId, "account_token"));
             } catch(Exception e) {
                 onError(req, res);
             }

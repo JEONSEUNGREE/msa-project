@@ -1,13 +1,10 @@
-package com.example.userservicemsa.security;
+package com.example.orderservice.security;
 
 import com.example.commonsource.response.ExceptionResponse;
-import com.example.userservicemsa.constants.SecurityConstant;
-import com.example.userservicemsa.security.filter.JwtAuthenticationFilter;
-import com.example.userservicemsa.security.filter.JwtLoginFilter;
-import com.example.userservicemsa.security.provider.JwtAuthenticationProvider;
-import com.example.userservicemsa.security.securityUtil.CookieUtil;
-import com.example.userservicemsa.security.securityUtil.JwtUtil;
-import com.example.userservicemsa.user.service.MemberService;
+import com.example.orderservice.constants.SecurityConstant;
+import com.example.orderservice.security.filter.JwtAuthenticationFilter;
+import com.example.orderservice.security.securityUtil.CookieUtil;
+import com.example.orderservice.security.securityUtil.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.*;
+import java.util.Date;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -31,25 +28,10 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
 
-    private final MemberService memberService;
-
     private final BCryptPasswordEncoder passwordEncoder;
 
     JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtProvider, CookieUtil cookieUtil) {
-        return new JwtAuthenticationFilter(authenticationManager(),jwtProvider, cookieUtil);
-    }
-
-    JwtLoginFilter jwtLoginFilter(JwtUtil jwtProvider, CookieUtil cookieUtil, MemberService memberService) {
-        return new JwtLoginFilter(authenticationManager(),memberService, jwtProvider, cookieUtil);
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(customAuthenticationProvider());
-    }
-
-    public JwtAuthenticationProvider customAuthenticationProvider() {
-        return new JwtAuthenticationProvider(memberService, passwordEncoder);
+        return new JwtAuthenticationFilter(jwtProvider, cookieUtil);
     }
     @Bean
     public WebSecurityCustomizer configure() {
@@ -57,7 +39,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtProvider, CookieUtil cookieUtil, MemberService memberService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtProvider, CookieUtil cookieUtil) throws Exception {
 
 
         http.httpBasic().disable()
@@ -70,8 +52,7 @@ public class SecurityConfig {
                 .antMatchers(SecurityConstant.permitAllArray).permitAll()
                 .antMatchers(SecurityConstant.authenticationAllArray).authenticated()
                 .and()
-                .addFilterAt(jwtLoginFilter(jwtProvider, cookieUtil, memberService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter(jwtProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(jwtAuthenticationFilter(jwtProvider, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(((request, response, authException) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
