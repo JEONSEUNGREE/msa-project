@@ -1,0 +1,3 @@
+rootProject.name = 'product-service'
+include ':common-source'
+project(':common-source').projectDir = new File(settingsDir, '../common-source')

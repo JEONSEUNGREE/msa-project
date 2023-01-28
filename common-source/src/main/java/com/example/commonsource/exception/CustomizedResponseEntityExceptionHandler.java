@@ -109,4 +109,19 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
+
+
+    // NoOrderException
+    @ExceptionHandler(NoProductResult.class)
+    public final ResponseEntity<Object> noOrderProductResultException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.
+                builder()
+                .message(ex.getMessage())
+                .timestamp(new Date())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NO_CONTENT);
+    }
 }

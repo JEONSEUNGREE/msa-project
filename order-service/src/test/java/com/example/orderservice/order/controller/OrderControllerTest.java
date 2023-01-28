@@ -1,21 +1,14 @@
 package com.example.orderservice.order.controller;
 
-import com.example.commonsource.constant.CommonOrderStatus;
-import com.example.commonsource.orderDto.OrderResultDto;
 import com.example.commonsource.orderDto.OrderViewDto;
 import com.example.orderservice.RestDocsConfiguration;
 import com.example.orderservice.interceptor.CommonArgumentResolver;
-import com.example.orderservice.interceptor.LoginInfo;
 import com.example.orderservice.order.service.OrderService;
 import com.example.orderservice.order.util.UserUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,22 +17,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 
-import javax.transaction.Transactional;
-import java.util.List;
-
 import static com.example.orderservice.order.util.ApiDocumentUtils.getDocumentRequest;
 import static com.example.orderservice.order.util.ApiDocumentUtils.getDocumentResponse;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
