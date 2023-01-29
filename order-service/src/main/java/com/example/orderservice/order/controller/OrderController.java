@@ -42,7 +42,7 @@ public class OrderController {
     @PostMapping(value = "/order")
     public EntityModel<JsonResponse> orderProduct(@CurrentUser LoginInfo loginInfo, @RequestBody OrderViewDto orderViewDto) {
 
-        orderService.orderProduct(orderViewDto, loginInfo.getUserId());
+        orderService.orderProduct(orderViewDto, loginInfo);
 
         JsonResponse result = JsonResponse.builder()
                 .msg(CommonConstants.SUCCESS)

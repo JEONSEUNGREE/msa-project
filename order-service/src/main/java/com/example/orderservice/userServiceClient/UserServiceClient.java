@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(name = "user-service", url = "${domain.api.user-service}")
+@FeignClient(name = "user-service")
 public interface UserServiceClient {
 
     @PostMapping(value = "/login", headers = "X-API-VERSION=1")

@@ -3,12 +3,12 @@ package com.example.commonsource.constant;
 
 public enum CommonOrderStatus {
 
-    ORDER_STATUS_10("waiting for payment"),
+    ORDER_STATUS_10("wait"),
     ORDER_STATUS_20("cancel"),
     ORDER_STATUS_30(""),
-    ORDER_STATUS_40("payment confirmation"),
+    ORDER_STATUS_40("paymentCh"),
     ORDER_STATUS_50("shipping"),
-    ORDER_STATUS_60("Delivery completed")
+    ORDER_STATUS_60("DeliverCom")
     ;
 
     private final String label;

@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 public class OrderViewDto {
 
+    /* 상품 아이디 */
+    public Integer productId;
     /* 카테고리 아이디 */
     public String categoryId;
     /* 상품 이름 */

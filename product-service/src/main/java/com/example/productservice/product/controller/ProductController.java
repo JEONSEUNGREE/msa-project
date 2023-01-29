@@ -6,6 +6,7 @@ import com.example.commonsource.productDto.ProductViewDto;
 import com.example.commonsource.response.JsonResponse;
 import com.example.productservice.interceptor.LoginInfo;
 import com.example.productservice.interceptor.annotation.CurrentUser;
+import com.example.productservice.interceptor.annotation.LoginCheck;
 import com.example.productservice.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
@@ -43,7 +44,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping(value = "/buyProduct")
+    @LoginCheck
+    @PostMapping(value = "/buyProduct")
     public ResponseEntity<EntityModel<JsonResponse>> buyProduct(@CurrentUser LoginInfo loginInfo, ProductViewDto productViewDto) {
 
         productService.buyProduct(loginInfo.getUserId(), productViewDto);

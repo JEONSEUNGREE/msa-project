@@ -30,6 +30,12 @@ public class OrderMs implements Serializable {
     private String category_id;
 
     /**
+     * 상품  pk
+     */
+    @Column(name = "product_id", nullable = false)
+    private Integer product_id;
+
+    /**
      * 주문차수
      */
     @Column(name = "order_sequence", nullable = false)
