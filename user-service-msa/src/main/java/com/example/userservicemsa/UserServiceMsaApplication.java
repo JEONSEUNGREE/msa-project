@@ -1,5 +1,6 @@
 package com.example.userservicemsa;
 
+import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -21,6 +22,11 @@ public class UserServiceMsaApplication {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Logger.Level feignLoggerLever() {
+        return Logger.Level.FULL;
     }
 
 }

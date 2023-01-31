@@ -3,6 +3,7 @@ package com.example.productservice;
 import com.example.productservice.product.entity.ProductsMs;
 import com.example.productservice.product.repository.ProductsMsRepository;
 import com.example.productservice.product.service.ProductService;
+import feign.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,6 +31,10 @@ public class ProductServiceApplication {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public Logger.Level feignLoggerLever() {
+        return Logger.Level.FULL;
+    }
 
 
 }

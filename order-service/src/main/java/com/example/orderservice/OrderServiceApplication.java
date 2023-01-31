@@ -1,5 +1,6 @@
 package com.example.orderservice;
 
+import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -20,6 +21,11 @@ public class OrderServiceApplication {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public Logger.Level feignLoggerLever() {
+		return Logger.Level.FULL;
 	}
 
 }

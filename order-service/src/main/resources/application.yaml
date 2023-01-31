@@ -41,6 +41,10 @@ spring:
         format_sql: true
 logging:
   level:
+    com:
+      example:
+        orderservice:
+          client: DEBUG
     org:
       hibernate:
         type: trace

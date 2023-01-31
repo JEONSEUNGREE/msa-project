@@ -41,7 +41,12 @@ spring:
         format_sql: true
 logging:
   level:
+    com:
+      example:
+        productservice:
+          client: DEBUG
     org:
       hibernate:
         type: trace
+
 
