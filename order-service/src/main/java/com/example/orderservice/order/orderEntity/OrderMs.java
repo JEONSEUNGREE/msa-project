@@ -17,9 +17,16 @@ public class OrderMs implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 아이디
+     * 주문번호 pk
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id", nullable = false)
+    private Integer orderId;
+
+    /**
+     * 아이디
+     */
     @Column(name = "user_id", nullable = false)
     private String userId;
 

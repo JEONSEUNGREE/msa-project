@@ -6,6 +6,7 @@ server:
       enabled: true
       force: true
 
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -21,6 +22,16 @@ spring:
     port: 1001
     username: admin
     password: admin
+  kafka:
+    consumer:
+      bootstrap-servers: 172.72.0.1:3001
+      group-id: group-01
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+    producer:
+      bootstrap-servers: 172.72.0.1:3001
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.LongSerializer
 
   application:
     name: user-service
