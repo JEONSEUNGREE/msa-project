@@ -1,4 +1,4 @@
-package com.example.orderservice.kafka;
+package com.example.productservice.kafka;
 
 import com.example.commonsource.constant.CommonKafka;
 import com.example.commonsource.productDto.ProductViewDto;
@@ -17,7 +17,7 @@ public class KafkaProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void orderToProduct(ProductViewDto productViewDto) {
+    public void rollbackOrder(ProductViewDto productViewDto) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = "";
         // 카프카 메시지 전달시 역직렬화 필요
@@ -26,7 +26,7 @@ public class KafkaProducer {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        kafkaTemplate.send(CommonKafka.KAFKA_ORDER_CREATE_TOPIC_VALUE, jsonInString);
+        kafkaTemplate.send(CommonKafka.KAFKA_ORDER_ROLLBACK_TOPIC_VALUE, jsonInString);
     }
 
 }

@@ -20,7 +20,7 @@ public class OrderMs implements Serializable {
      * 주문번호 pk
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id", nullable = false)
     private Integer orderId;
 

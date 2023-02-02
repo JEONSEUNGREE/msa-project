@@ -1,36 +1,39 @@
 package com.example.orderservice.kafka;
 
-
 import com.example.commonsource.constant.CommonKafka;
 import com.example.commonsource.productDto.ProductViewDto;
+import com.example.orderservice.order.repository.OrderMsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class KafkaConsumer {
 
+    private OrderMsRepository orderMsRepository;
 
-    private final String rollbackTopic = "order-rollback";
+    @Autowired
+    public KafkaConsumer(OrderMsRepository orderMsRepository) {
+        this.orderMsRepository = orderMsRepository;
+    }
 
-    @KafkaListener(topics = rollbackTopic)
+    @KafkaListener(topics = CommonKafka.KAFKA_ORDER_ROLLBACK_TOPIC_VALUE, groupId = CommonKafka.KAFKA_GROUP_ID)
     public void rollbackOrder(String rollbackOrder) {
         log.info("Rollback Order: ->" + rollbackOrder);
 
         ObjectMapper mapper = new ObjectMapper();
+        ProductViewDto productViewDto = null;
+
         try {
-            ProductViewDto productViewDto = mapper.readValue(rollbackOrder, ProductViewDto.class);
+            productViewDto = mapper.readValue(rollbackOrder, ProductViewDto.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
+        orderMsRepository.deleteById(productViewDto.getOrderId());
     }
 }

@@ -24,12 +24,12 @@ spring:
     password: admin
   kafka:
     consumer:
-      bootstrap-servers: 172.72.0.1:3001
-      group-id: group-01
+      bootstrap-servers: 172.72.77.100:3001
+      group-id: msa-project
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.LongDeserializer
     producer:
-      bootstrap-servers: 172.72.0.1:3001
+      bootstrap-servers: 172.72.77.100:3001
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.LongSerializer
 

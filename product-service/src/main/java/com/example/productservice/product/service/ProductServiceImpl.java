@@ -3,6 +3,7 @@ package com.example.productservice.product.service;
 import com.example.commonsource.exception.NoProductResult;
 import com.example.commonsource.productDto.ProductResultDto;
 import com.example.commonsource.productDto.ProductViewDto;
+import com.example.productservice.kafka.KafkaProducer;
 import com.example.productservice.product.entity.ProductsMs;
 import com.example.productservice.product.repository.ProductsMsRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductsMsRepository productsMsRepository;
+
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public ProductResultDto getProductInfo(Integer productId) {
@@ -37,14 +40,14 @@ public class ProductServiceImpl implements ProductService {
     public void buyProduct(String userId, ProductViewDto productViewDto) {
         try {
             Optional<ProductsMs> productsMs = productsMsRepository.findById(productViewDto.getProductId());
-
-            productsMs.orElseThrow(() -> new NoProductResult("존재하지않는 상품입니다."));
-
-            productsMs.get().changeProductQty(productViewDto.getQty(), "buy");
-
-            productsMsRepository.save(productsMs.get());
-        } catch (NoProductResult ex) {
             throw new NoProductResult("존재하지않는 상품입니다.");
+//            productsMs.orElseThrow(() -> new NoProductResult("존재하지않는 상품입니다."));
+//
+//            productsMs.get().changeProductQty(productViewDto.getQty(), "buy");
+//
+//            productsMsRepository.save(productsMs.get());
+        } catch (NoProductResult ex) {
+            kafkaProducer.rollbackOrder(productViewDto);
         }
     }
 

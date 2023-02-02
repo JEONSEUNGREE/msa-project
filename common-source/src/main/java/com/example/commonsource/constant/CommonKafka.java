@@ -1,20 +1,11 @@
 package com.example.commonsource.constant;
 
-public enum CommonKafka {
+public class CommonKafka {
 
-    KAFKA_ORDER_CREATE_TOPIC("order-create"),
-    KAFKA_ORDER_ROLLBACK_TOPIC("order-rollback"),
-    KAFKA_PRODUCT_CREATE_TOPIC("product-create"),
-    KAFKA_PRODUCT_ROLLBACK_TOPIC("product-rollback")
-    ;
+    public final static String KAFKA_ORDER_CREATE_TOPIC_VALUE = "order-create";
+    public final static String KAFKA_ORDER_ROLLBACK_TOPIC_VALUE = "order-rollback";
+    public final static String KAFKA_PRODUCT_CREATE_TOPIC_VALUE = "product-create";
+    public final static String KAFKA_PRODUCT_ROLLBACK_TOPIC_VALUE = "product-rollback";
+    public final static String KAFKA_GROUP_ID = "msa-project";
 
-    private final String topic;
-
-    CommonKafka(String topic) {
-        this.topic = topic;
-    }
-
-    public String topic() {
-        return topic;
-    }
 }
