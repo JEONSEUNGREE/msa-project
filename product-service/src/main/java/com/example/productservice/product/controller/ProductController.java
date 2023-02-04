@@ -65,7 +65,7 @@ public class ProductController {
     }
 
 
-    @PutMapping(value = "/cancelProduct")
+    @PostMapping(value = "/cancelProduct")
     public ResponseEntity<EntityModel<JsonResponse>> cancelProduct(@CurrentUser LoginInfo loginInfo, ProductViewDto productViewDto) {
 
         productService.cancelProduct(loginInfo.getUserId(), productViewDto);

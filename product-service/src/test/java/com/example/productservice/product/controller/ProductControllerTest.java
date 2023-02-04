@@ -104,7 +104,7 @@ class ProductControllerTest {
 
         /* when */
         ResultActions result = this.mockMvc.perform(
-                put("/buyProduct")
+                post("/buyProduct")
                         .header("account_token", "account_token")
                         .content(objectMapper.writeValueAsString(productViewDto))
                         .characterEncoding("utf-8")
@@ -117,6 +117,7 @@ class ProductControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
+                                fieldWithPath("orderId").type(JsonFieldType.NUMBER).description("주문PK").ignored(),
                                 fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품아이디"),
                                 fieldWithPath("qty").type(JsonFieldType.NUMBER).description("수량")
                         ),
@@ -145,7 +146,7 @@ class ProductControllerTest {
 
         /* when */
         ResultActions result = this.mockMvc.perform(
-                put("/cancelProduct")
+                post("/cancelProduct")
                         .header("account_token", "account_token")
                         .content(objectMapper.writeValueAsString(productViewDto))
                         .characterEncoding("utf-8")
@@ -158,6 +159,7 @@ class ProductControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
+                                fieldWithPath("orderId").type(JsonFieldType.NUMBER).description("상품아이디").ignored(),
                                 fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품아이디"),
                                 fieldWithPath("qty").type(JsonFieldType.NUMBER).description("수량")
                         ),

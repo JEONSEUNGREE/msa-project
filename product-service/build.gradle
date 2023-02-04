@@ -19,13 +19,10 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = '11'
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
     asciidoctorExt
 }
 
@@ -69,7 +66,6 @@ dependencies {
     implementation project(':common-source')
 }
 
-
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
@@ -93,7 +89,8 @@ asciidoctor {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
+// 아래를 보면 bootJar는 asciidoctor task이후에 수행되며 수행 후 copyDocument task를 수행 합니다.
+// NO-SOURCE 에러시 디렉토리 확인 src/docs/asciidoc 경
 bootJar {
     dependsOn asciidoctor
     copy {

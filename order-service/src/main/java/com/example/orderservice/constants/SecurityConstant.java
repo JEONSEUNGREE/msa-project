@@ -12,9 +12,10 @@ public class SecurityConstant {
 
     /**
      * 권한제외 대상
+     *
      * @see SecurityConfig
      */
-    public static final String[] permitAllArray = new String[] { "/login", "/home", "/signup", "/docs/index.html"};
+    public static final String[] permitAllArray = new String[]{"/login", "/home", "/signup", "/docs/index.html", "/actuator/**"};
 
     /**
      * 권한 인증 상대

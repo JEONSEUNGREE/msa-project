@@ -10,6 +10,7 @@ import com.example.userservicemsa.interceptor.annotation.LoginCheck;
 import com.example.userservicemsa.interceptor.annotation.VersionCheck;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.service.MemberService;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,8 @@ public class MemberController {
     }
 
     @LoginCheck
+    // 사용시 metrics 화면에 집계됨
+    @Timed(value = "user.getOrderList", longTask = true)
     @GetMapping(value = "/getUserOrderList")
     public ResponseEntity<EntityModel<JsonResponse>> getOneUserOrderList(@CurrentUser LoginInfo loginInfo) {
 

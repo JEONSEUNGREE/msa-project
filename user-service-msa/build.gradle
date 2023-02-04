@@ -63,6 +63,11 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-sleuth-dependencies:3.0.2'
     implementation 'org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE'
 
+    /* hystrix, turbine 대체 prometheus - metrics 수집, 모니터링및 알람을 위한 어플리케이션 */
+    /* TSDB Time Series Database 사용 (시간단위로 저장) /[micro-service-name]/actuator/prometheus */
+    /* Grafana는 위 프로메테우스가 수집한 정보를 도식화, 모니터링, 분석함 */
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.3'
+
     implementation project(':common-source')
 }
 
@@ -89,6 +94,7 @@ asciidoctor {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 // 아래를 보면 bootJar는 asciidoctor task이후에 수행되며 수행 후 copyDocument task를 수행 합니다.
 bootJar {
     dependsOn asciidoctor

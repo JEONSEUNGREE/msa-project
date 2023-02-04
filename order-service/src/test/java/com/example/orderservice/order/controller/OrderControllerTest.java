@@ -125,6 +125,7 @@ class OrderControllerTest {
                                 headerWithName("account_token").description("JWT토큰")
                         ),
                         requestFields(
+                                fieldWithPath("productId").type(JsonFieldType.STRING).description("상품PK").ignored(),
                                 fieldWithPath("productName").type(JsonFieldType.STRING).description("상품이름"),
                                 fieldWithPath("categoryId").type(JsonFieldType.STRING).description("카테고리아이디"),
                                 fieldWithPath("qty").type(JsonFieldType.NUMBER).description("수량")

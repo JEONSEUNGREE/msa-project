@@ -33,6 +33,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.16.0'
+
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.10.3'
 }
 
 dependencyManagement {

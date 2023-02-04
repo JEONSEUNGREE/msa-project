@@ -19,6 +19,12 @@ spring:
   profiles:
     active: local
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh, info, metrics, prometheus
+
 # config Server (Dynamic Setting)
 #spring:
 #  application:

@@ -74,4 +74,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, busrefresh
+        include: health, busrefresh, info, metrics, prometheus
+  endpoint:
+    prometheus:
+      enabled: true
