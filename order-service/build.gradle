@@ -64,6 +64,11 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-contract-wiremock'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+	implementation 'org.springframework.cloud:spring-cloud-circuitbreaker-resilience4j:2.1.5'
+
+	/* MSA 로그 */
+	implementation 'org.springframework.cloud:spring-cloud-sleuth-dependencies:3.0.2'
+	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE'
 
 	implementation project(':common-source')
 }

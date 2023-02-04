@@ -35,9 +35,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResultDto> getOneUserOrderList(String userId) {
 
+        log.info("Before retrieved order microservice");
         Optional<List<OrderMs>> userOrderList = orderMsRepository.findAllByUserId(userId);
 
         userOrderList.orElseThrow(() -> new NoOrderResult("주문 내역이 없습니다."));
+        log.info("After received order microservice");
 
         return userOrderList.get().stream().map(item ->
                 OrderResultDto.builder()

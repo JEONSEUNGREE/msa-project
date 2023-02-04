@@ -18,10 +18,17 @@ eureka:
 
 spring:
   rabbitmq:
-    host: 127.0.0.1
+    host: 172.72.0.1
     port: 1001
     username: admin
     password: admin
+  zipkin:
+    base-url: http://172.72.0.1:3011
+    enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
+
   kafka:
     consumer:
       bootstrap-servers: 172.72.77.100:3001
