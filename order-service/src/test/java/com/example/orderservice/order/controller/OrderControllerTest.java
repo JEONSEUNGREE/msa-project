@@ -101,8 +101,9 @@ class OrderControllerTest {
 
         /* given */
         OrderViewDto testProducts = OrderViewDto.builder()
+                .productId(1)
                 .productName("TEST_PRODUCTS")
-                .categoryId("50")
+                .categoryId("1")
                 .qty(1)
                 .build();
 

@@ -8,14 +8,15 @@ public class SecurityConstant {
      * @see SecurityConfig
      */
     public static final String[] resourceArray = new String[] { "/css/**", "/fonts/**", "/images/**", "/js/**",
-            "/modules/**", "/h2-console/**", "/swagger-ui/**" };
+            "/modules/**", "/h2-console/**", "/swagger-ui/**", "/product-image/**" };
 
     /**
      * 권한제외 대상
      *
      * @see SecurityConfig
      */
-    public static final String[] permitAllArray = new String[]{"/login", "/home", "/signup", "/docs/index.html", "/actuator/**"};
+    public static final String[] permitAllArray = new String[]{
+            "/login", "/home", "/signup", "/docs/index.html", "/actuator/**"};
 
     /**
      * 권한 인증 상대

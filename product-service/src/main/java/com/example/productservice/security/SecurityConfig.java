@@ -8,6 +8,7 @@ import com.example.productservice.security.securityUtil.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.DispatcherType;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -31,16 +33,19 @@ public class SecurityConfig {
     JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtProvider, CookieUtil cookieUtil) {
         return new JwtAuthenticationFilter(jwtProvider, cookieUtil);
     }
+
     @Bean
     public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring().mvcMatchers(SecurityConstant.resourceArray);
+        return (web) -> web.ignoring()
+                .dispatcherTypeMatchers(DispatcherType.ERROR)
+                .antMatchers(SecurityConstant.resourceArray);
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtProvider, CookieUtil cookieUtil) throws Exception {
 
-
-        http.httpBasic().disable()
+        http
+                .httpBasic().disable()
                 .formLogin().disable()
                 .cors().disable()
                 .csrf().disable()

@@ -72,7 +72,11 @@ include::{snippets}/signup is success/http-response.adoc[]
 [[overview-signup]]
 == 회원가입
 
-회원가입시 다음과같은 필드를 작성하여 요청한다.
+회원가입시 다음과같은 필드를 작성하여 요청한다. +
+* 버전 - 1로 설정 필수
+
+버전
+include::{snippets}/signup is success/request-headers.adoc[]
 
 include::{snippets}/signup is success/request-fields.adoc[]
 

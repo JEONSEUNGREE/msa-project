@@ -84,7 +84,8 @@ include::{snippets}/getProductInfo is success/response-fields.adoc[]
 응답 예)
 include::{snippets}/getProductInfo is success/response-body.adoc[]
 
-== 취소 API
+== 구매 API
+*orderId는 불필요
 
 구매 요청 필드 (body)
 include::{snippets}/buyProduct is success/request-fields.adoc[]
@@ -99,6 +100,7 @@ include::{snippets}/buyProduct is success/response-fields.adoc[]
 include::{snippets}/buyProduct is success/response-body.adoc[]
 
 == 취소 API
+*orderId는 불필요
 
 취소 요청 필드 (body)
 include::{snippets}/cancelProduct is success/request-fields.adoc[]

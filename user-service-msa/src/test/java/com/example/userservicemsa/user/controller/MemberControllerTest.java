@@ -1,9 +1,11 @@
 package com.example.userservicemsa.user.controller;
 
 import com.example.userservicemsa.RestDocsConfiguration;
+import com.example.userservicemsa.interceptor.CommonArgumentResolver;
 import com.example.userservicemsa.user.dto.SignupDTO;
 import com.example.userservicemsa.user.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static com.example.util.ApiDocumentUtils.getDocumentRequest;
 import static com.example.util.ApiDocumentUtils.getDocumentResponse;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,6 +54,15 @@ class MemberControllerTest {
     @MockBean
     private MemberService memberService;
 
+    @BeforeEach
+    public void setUp() {
+        MockMvc mockMvc = MockMvcBuilders
+                .standaloneSetup(new MemberControllerTest())
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .setCustomArgumentResolvers(new CommonArgumentResolver())
+                .build();
+    }
+
     @Test
     public void memberSignupTest() throws Exception {
 
@@ -70,17 +85,20 @@ class MemberControllerTest {
         );
         //then
         result.andExpect(status().isCreated())
-                .andDo(document("Get user orderList is success",
+                .andDo(document("signup is success",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestHeaders(
+                                headerWithName("X-API-VERSION").description("버전")
+                        ),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                                 fieldWithPath("id").type(JsonFieldType.STRING).description("아이디"),
                                 fieldWithPath("pw").type(JsonFieldType.STRING).description("패스워드"),
                                 fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("핸드폰번호").optional(),
-                                fieldWithPath("birthInfo").type(JsonFieldType.STRING).description("주소").optional(),
-                                fieldWithPath("address").type(JsonFieldType.STRING).description("생년월일").optional()
+                                fieldWithPath("birthInfo").type(JsonFieldType.STRING).description("생년월일").optional(),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("주소").optional()
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),
