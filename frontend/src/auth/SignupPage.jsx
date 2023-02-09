@@ -9,13 +9,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/index";
+import { LOCAL_URI } from "../constants/constant";
+import axios from "axios";
 
 export default function FormDialog() {
   const isSignupShow = useSelector((state) => state.auth.isSignup);
   const [userId, setUserId] = useState("");
-  const [userId, setUserId] = useState("");
-  const [userId, setUserId] = useState("");
-  const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [pw, setPw] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
 
   const dispatch = useDispatch();
 
@@ -25,8 +28,28 @@ export default function FormDialog() {
   };
 
   const signupHandler = (event) => {
-    event.preventDefault();
-    dispatch(authActions.signupHandler());
+    axios
+      .post(
+        `${LOCAL_URI}/user-service/signup`,
+        {
+          id: userId,
+          name: name,
+          pw: pw,
+          email: email,
+          phoneNum: phoneNum,
+        },
+        {
+          headers: {
+            "API-VERSION": 1,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(authActions.isSignupClose());
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -55,9 +78,9 @@ export default function FormDialog() {
             margin="dense"
             id="name"
             label="name"
-            value={userId}
+            value={name}
             onChange={(e) => {
-              setUserId(e.currentTarget.value);
+              setName(e.currentTarget.value);
             }}
             fullWidth
             variant="standard"
@@ -67,9 +90,9 @@ export default function FormDialog() {
             margin="dense"
             id="email"
             label="email"
-            value={userId}
+            value={email}
             onChange={(e) => {
-              setUserId(e.currentTarget.value);
+              setEmail(e.currentTarget.value);
             }}
             fullWidth
             variant="standard"
@@ -79,10 +102,11 @@ export default function FormDialog() {
             margin="dense"
             id="pw"
             label="pw"
-            value={userId}
+            value={pw}
             onChange={(e) => {
-              setUserId(e.currentTarget.value);
+              setPw(e.currentTarget.value);
             }}
+            type="password"
             fullWidth
             variant="standard"
           />
@@ -91,6 +115,10 @@ export default function FormDialog() {
             margin="dense"
             id="phoneNum"
             label="phoneNum"
+            value={phoneNum}
+            onChange={(e) => {
+              setPhoneNum(e.currentTarget.value);
+            }}
             type="Number"
             fullWidth
             variant="standard"

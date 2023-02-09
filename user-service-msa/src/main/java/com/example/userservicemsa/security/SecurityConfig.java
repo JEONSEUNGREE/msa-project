@@ -11,6 +11,7 @@ import com.example.userservicemsa.user.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.*;
 
@@ -34,6 +38,8 @@ public class SecurityConfig {
     private final MemberService memberService;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private final Environment env;
 
     JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtProvider, CookieUtil cookieUtil) {
         return new JwtAuthenticationFilter(authenticationManager(),jwtProvider, cookieUtil);
@@ -51,6 +57,22 @@ public class SecurityConfig {
     public JwtAuthenticationProvider customAuthenticationProvider() {
         return new JwtAuthenticationProvider(memberService, passwordEncoder);
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:1221"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setMaxAge(3600L);
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().mvcMatchers(SecurityConstant.resourceArray);
@@ -59,11 +81,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtUtil jwtProvider, CookieUtil cookieUtil, MemberService memberService) throws Exception {
 
-
         http.httpBasic().disable()
                 .formLogin().disable()
-                .cors().disable()
                 .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.authorizeRequests()

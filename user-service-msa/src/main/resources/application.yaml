@@ -78,3 +78,6 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+front-server:
+  port: http://localhost:1221

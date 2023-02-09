@@ -42,7 +42,8 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(success);
     }
 
-    @PostMapping(value = "/signup", headers = "X-API-VERSION=1")
+    @VersionCheck(versionKey = "API-VERSION", versionValue = "1")
+    @PostMapping(value = "/signup")
     public ResponseEntity<EntityModel<JsonResponse>> signup(@RequestBody(required = true) SignupDTO signupDTO) {
         HttpStatus status = HttpStatus.CREATED;
         String msg = CommonConstants.SUCCESS;
