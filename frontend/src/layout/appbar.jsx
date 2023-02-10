@@ -6,17 +6,29 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/index";
+import { getCookie, removeCookie } from "../store/cookie";
+import { AUTH_TOKEN } from "../constants/constant";
 
 export default function ButtonAppBar() {
+  const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
 
   const signupHandler = (event) => {
     event.preventDefault();
     dispatch(authActions.isSignupShow());
+  };
+
+  const loginHandler = (event) => {
+    event.preventDefault();
+    dispatch(authActions.isLoginShow());
+  };
+
+  const logoutHandler = (event) => {
+    event.preventDefault();
+    removeCookie(AUTH_TOKEN);
   };
 
   return (
@@ -38,11 +50,16 @@ export default function ButtonAppBar() {
           <Button color="inherit" onClick={signupHandler}>
             Signup
           </Button>
-          <Button color="inherit">
-            <Link to="/login" style={{ textDecoration: "none" }}>
+          {!isAuth && (
+            <Button color="inherit" onClick={loginHandler}>
               Login
-            </Link>
-          </Button>
+            </Button>
+          )}
+          {isAuth && (
+            <Button color="inherit" onClick={logoutHandler}>
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

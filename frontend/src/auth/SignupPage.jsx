@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/index";
-import { LOCAL_URI } from "../constants/constant";
+import { LOCAL_URI, APPLICATION } from "../constants/constant";
 import axios from "axios";
 
 export default function FormDialog() {
@@ -40,8 +40,8 @@ export default function FormDialog() {
         },
         {
           headers: {
-            "API-VERSION": 1,
-            "Content-Type": "application/json",
+            API_VERSION: 1,
+            "Content-Type": APPLICATION,
           },
         }
       )

@@ -1,70 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LOCAL_URI } from "../constants/constant";
-import axios from "axios";
+import { getCookie } from "../store/cookie";
+import { AUTH_TOKEN } from "../constants/constant";
 
 const initalAuthState = {
-  isLogin: localStorage.getItem("account_token") != null ? true : false,
+  isLogin: false,
   isSignup: false,
+  isAuth: getCookie(AUTH_TOKEN) != null ? true : false,
 };
-
 
 const authSlice = createSlice({
   name: "auth",
   initialState: initalAuthState,
   reducers: {
-    loginHandler(state, actions) {
-      axios
-        .post(
-          `${LOCAL_URI}/user-service/signup`,
-          {
-            id: actions.payload.id,
-            name: actions.payload.name,
-            email: actions.payload.email,
-            pw: actions.payload.pw,
-          },
-          {
-            headers: {
-              "API-VERSION": 1,
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      state.isLogin = true;
-      localStorage.setItem("account_tokgien", actions.payload);
-    },
-    logoutHandler(state, actions) {
-      state.isLogin = false;
-      localStorage.removeItem("account_token");
-    },
-    isSignupClose(state, actions) {
-      state.isSignup = !state.isSignup;
+    isSignupClose(state) {
+      state.isSignup = false;
     },
     isSignupShow(state) {
-      state.isSignup = !state.isSignup;
-      // axios.post(`${LOCAL_URI}/user-service/signup`,
-      // {
-      //     id: actions.payload.id,
-      //     name: actions.payload.name,
-      //     email: actions.payload.email,
-      //     pw: actions.payload.pw,
-      //     phoneNum: actions.payload.phoneNum,
-      //     birthInfo: actions.payload.birthInfo,
-      //     address: actions.payload.address,
-      // },
-      // {
-      //     headers: {
-      //         "Content-Type": 'application/json',
-      //         'X-API-VERSION': 1,
-      //     }
-      // })
-      // .then(res =>
-      //     console.log(res)
-      // )
-      // .catch(err =>
-      //     console.log(err)
-      // );
+      state.isSignup = true;
+    },
+    isLoginShow(state) {
+      state.isLogin = true;
+    },
+    isLoginClose(state) {
+      state.isLogin = false;
     },
   },
 });
