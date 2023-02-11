@@ -13,6 +13,7 @@ public class ProductResultDto {
     private Integer productPrice;
     private String status;
     private String productLocation;
+    private String productThumbnail;
     private Integer qty;
 
 }

@@ -9,7 +9,9 @@ import com.example.productservice.product.repository.ProductsMsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -64,5 +66,19 @@ public class ProductServiceImpl implements ProductService {
         } catch (NoProductResult ex) {
             throw new NoProductResult("존재하지않는 상품입니다.");
         }
+    }
+
+    @Override
+    public List<ProductResultDto> sellProductList() {
+        List<ProductsMs> productList = productsMsRepository.findAll();
+        return productList.stream().map(item ->
+                ProductResultDto.builder()
+                        .productId(item.getProductId())
+                        .productName(item.getProductName())
+                        .qty(item.getQty())
+                        .productThumbnail(item.getProductImages())
+                        .status(item.getProductStatus())
+                        .productPrice(item.getProductPrice())
+                        .build()).collect(Collectors.toList());
     }
 }

@@ -2,10 +2,7 @@ package com.example.productservice.product.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +20,7 @@ public class ProductsMs implements Serializable {
      * 기본키
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id", nullable = false)
     private Integer productId;
 

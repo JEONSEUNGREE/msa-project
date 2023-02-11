@@ -8,8 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/index";
-import { getCookie, removeCookie } from "../store/cookie";
+import { authActions, drawerActions } from "../store/index";
+import { removeCookie } from "../store/cookie";
 import { AUTH_TOKEN } from "../constants/constant";
 
 export default function ButtonAppBar() {
@@ -31,6 +31,11 @@ export default function ButtonAppBar() {
     removeCookie(AUTH_TOKEN);
   };
 
+  const drawerOpenHandler = (event) => {
+    event.preventDefault();
+    dispatch(drawerActions.isDrawerOpen());
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -41,11 +46,12 @@ export default function ButtonAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={drawerOpenHandler}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Home
           </Typography>
           <Button color="inherit" onClick={signupHandler}>
             Signup

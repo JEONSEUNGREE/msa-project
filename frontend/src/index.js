@@ -1,15 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Bar from "./layout/appbar";
+import Bar from "./layout/Appbar";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SignupPage from "./auth/SignupPage";
 import LoginPage from "./auth/loginPage";
-import Login from "./auth/Login";
+import Drawer from "./layout/Drawer";
+import Home from "./main/Home";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import { CookiesProvider } from "react-cookie";
+import Grid from "./layout/Grid";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,11 +20,17 @@ root.render(
       <BrowserRouter>
         <React.StrictMode>
           <Bar />
+          <Drawer />
+
           <SignupPage />
           <LoginPage />
+
           <Switch>
-            <Route path="/login" exact>
-              <Login />
+            <Route path="/home" exact>
+              <Home />
+            </Route>
+            <Route path="/product" exact>
+              <Grid />
             </Route>
           </Switch>
         </React.StrictMode>

@@ -114,5 +114,16 @@ include::{snippets}/cancelProduct is success/response-fields.adoc[]
 응답 예)
 include::{snippets}/cancelProduct is success/response-body.adoc[]
 
+== 판매 상품 목록 API
+
+요청 예)
+include::{snippets}/sellProductList is success/http-request.adoc[]
+
+응답 필드)
+include::{snippets}/sellProductList is success/response-fields.adoc[]
+
+응답 예)
+include::{snippets}/sellProductList is success/response-body.adoc[]
+
 
 

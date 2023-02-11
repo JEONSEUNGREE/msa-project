@@ -2,11 +2,13 @@ import { LOCAL_URI, APPLICATION } from "../constants/constant";
 import axios from "axios";
 import { setCookie } from "./cookie";
 import { AUTH_TOKEN } from "../constants/constant";
+import store from "./index";
+import { productActions } from "../store/index";
 
 export function userLoginHandler(payload) {
   axios
     .post(
-      `${LOCAL_URI}/user-service/signup`,
+      `${LOCAL_URI}/user-service/login`,
       {
         userId: payload.userId,
         password: payload.pw,
@@ -19,8 +21,17 @@ export function userLoginHandler(payload) {
       }
     )
     .then((res) => {
-      let token = res.headers;
-      setCookie(AUTH_TOKEN, token, {});
+      console.log(res.headers.account_token);
+      setCookie(AUTH_TOKEN, res.headers.account_token, {});
+    })
+    .catch((err) => console.log(err));
+}
+
+export function getProductList() {
+  axios
+    .get(`${LOCAL_URI}/product-service/sellProductList`)
+    .then((res) => {
+      store.dispatch(productActions.getProductList(res.data.responseData));
     })
     .catch((err) => console.log(err));
 }

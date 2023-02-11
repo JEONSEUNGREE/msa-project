@@ -175,4 +175,32 @@ class ProductControllerTest {
                 ));
     }
 
+    @Test
+    @WithMockUser
+    public void sellProductList() throws Exception {
+
+        /* when */
+        ResultActions result = this.mockMvc.perform(
+                get("/sellProductList")
+                        .characterEncoding("utf-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        /* then */
+        result.andExpect(status().isAccepted())
+                .andDo(document("sellProductList is success",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("상태코드"),
+                                fieldWithPath("msg").type(JsonFieldType.STRING).description("메시지"),
+                                fieldWithPath("responseData").type(JsonFieldType.ARRAY).description("응답데이터").optional(),
+                                fieldWithPath("_links.self.href").type(JsonFieldType.STRING).description("판매상품정보").optional(),
+                                fieldWithPath("_links.cancelProduct.href").type(JsonFieldType.STRING).description("취소정보").optional(),
+                                fieldWithPath("_links.getProductInfo.href").type(JsonFieldType.STRING).description("상품정보").optional(),
+                                fieldWithPath("_links.buyProduct.href").type(JsonFieldType.STRING).description("구매 URI").optional()
+                        )
+                ));
+    }
 }

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -80,6 +82,27 @@ public class ProductController {
         response.add(linkTo(methodOn(ProductController.class).cancelProduct(loginInfo, productViewDto)).withSelfRel());
         response.add(linkTo(methodOn(ProductController.class).buyProduct(LoginInfo.builder().build(), ProductViewDto.builder().build())).withRel("buyProduct"));
         response.add(linkTo(methodOn(ProductController.class).getProductInfo(productViewDto.getProductId())).withRel("getProductInfo"));
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    }
+
+    @GetMapping(value = "/sellProductList")
+    public ResponseEntity<EntityModel<JsonResponse>> sellProductList() {
+
+        List<ProductResultDto> productResults = productService.sellProductList();
+
+        JsonResponse success = JsonResponse.builder()
+                .status(HttpStatus.OK)
+                .responseData(productResults)
+                .msg("SUCCESS")
+                .build();
+
+        EntityModel<JsonResponse> response = EntityModel.of(success);
+
+        response.add(linkTo(methodOn(ProductController.class).sellProductList()).withSelfRel());
+        response.add(linkTo(methodOn(ProductController.class).cancelProduct(LoginInfo.builder().build(), ProductViewDto.builder().build())).withRel("cancelProduct"));
+        response.add(linkTo(methodOn(ProductController.class).buyProduct(LoginInfo.builder().build(), ProductViewDto.builder().build())).withRel("buyProduct"));
+        response.add(linkTo(methodOn(ProductController.class).getProductInfo(Integer.valueOf(1))).withRel("getProductInfo"));
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
