@@ -8,12 +8,14 @@ import SignupPage from "./auth/SignupPage";
 import LoginPage from "./auth/loginPage";
 import Drawer from "./layout/Drawer";
 import Home from "./main/Home";
+import ProductOrder from "./main/ProductOrder";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import { CookiesProvider } from "react-cookie";
 import Grid from "./layout/Grid";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <CookiesProvider>
     <Provider store={store}>
@@ -24,6 +26,7 @@ root.render(
 
           <SignupPage />
           <LoginPage />
+          <ProductOrder />
 
           <Switch>
             <Route path="/home" exact>

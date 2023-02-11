@@ -36,7 +36,6 @@ public class ProductController {
                 .responseData(productInfo)
                 .build();
 
-
         EntityModel<JsonResponse> response = EntityModel.of(success);
 
         response.add(linkTo(methodOn(ProductController.class).getProductInfo(productId)).withSelfRel());

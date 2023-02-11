@@ -15,7 +15,6 @@ import java.util.List;
 @Component
 public class TestProducts implements CommandLineRunner {
 
-
     private final ProductsMsRepository repository;
 
     @Override

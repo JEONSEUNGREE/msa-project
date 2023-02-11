@@ -34,11 +34,10 @@ export default function FormDialog() {
   return (
     <div>
       <Dialog open={isLoginShow} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>LOGIN</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Please enter your Id and Password
           </DialogContentText>
           <TextField
             autoFocus
@@ -57,7 +56,7 @@ export default function FormDialog() {
             margin="dense"
             id="pw"
             label="pw"
-            type="passowrd"
+            type="password"
             value={pw}
             onChange={(e) => {
               setPw(e.currentTarget.value);
@@ -68,7 +67,7 @@ export default function FormDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={loginSubmit}>Subscribe</Button>
+          <Button onClick={loginSubmit}>Login</Button>
         </DialogActions>
       </Dialog>
     </div>

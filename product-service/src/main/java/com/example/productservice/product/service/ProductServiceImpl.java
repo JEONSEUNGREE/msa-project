@@ -31,6 +31,8 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductResultDto.builder()
                 .productId(productsMs.get().getProductId())
+                .productThumbnail(productsMs.get().getProductImages())
+                .status(productsMs.get().getProductStatus())
                 .productName(productsMs.get().getProductName())
                 .productPrice(productsMs.get().getProductPrice())
                 .qty(productsMs.get().getQty())
@@ -42,12 +44,13 @@ public class ProductServiceImpl implements ProductService {
     public void buyProduct(String userId, ProductViewDto productViewDto) {
         try {
             Optional<ProductsMs> productsMs = productsMsRepository.findById(productViewDto.getProductId());
-            throw new NoProductResult("존재하지않는 상품입니다.");
+
+//            throw new NoProductResult("존재하지않는 상품입니다.");
 //            productsMs.orElseThrow(() -> new NoProductResult("존재하지않는 상품입니다."));
+
+            productsMs.get().changeProductQty(productViewDto.getQty(), "buy");
 //
-//            productsMs.get().changeProductQty(productViewDto.getQty(), "buy");
-//
-//            productsMsRepository.save(productsMs.get());
+            productsMsRepository.save(productsMs.get());
         } catch (NoProductResult ex) {
             kafkaProducer.rollbackOrder(productViewDto);
         }

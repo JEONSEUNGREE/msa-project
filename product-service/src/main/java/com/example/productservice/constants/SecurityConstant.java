@@ -16,7 +16,7 @@ public class SecurityConstant {
      * @see SecurityConfig
      */
     public static final String[] permitAllArray = new String[]{
-            "/login", "/home", "/signup", "/docs/index.html", "/actuator/**", "/sellProductList"};
+            "/login", "/home", "/signup", "/docs/index.html", "/actuator/**", "/sellProductList", "/getProductInfo", "/buyProduct"};
 
     /**
      * 권한 인증 상대

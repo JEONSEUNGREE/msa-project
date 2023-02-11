@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -6,16 +6,26 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { LOCAL_URI } from "../constants/constant";
+import { useDispatch } from "react-redux";
+import { productActions } from "../store/index";
+import { getProductInfoHandler } from "../store/DataUtil";
 
 export default function ImgMediaCard(props) {
-  console.log(props);
+  const [prodId, setProdId] = useState(props.productInfo.productId);
+
+  const dispatch = useDispatch();
+
+  const handleOrderModal = (event) => {
+    event.preventDefault();
+    getProductInfoHandler(prodId);
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         alt="green iguana"
-        height="350"
-        crossorigin
+        height="340"
         image={LOCAL_URI + props.productInfo.productThumbnail}
       />
       <CardContent>
@@ -26,11 +36,15 @@ export default function ImgMediaCard(props) {
           STATUS : {props.productInfo.status}
           <br />
           PRICE : {props.productInfo.productPrice}
+          <br />
+          QTY : {props.productInfo.qty}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={handleOrderModal}>
+          BUY
+        </Button>
+        <Button size="small">DESC</Button>
       </CardActions>
     </Card>
   );
