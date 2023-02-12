@@ -8,6 +8,7 @@ import SignupPage from "./auth/SignupPage";
 import LoginPage from "./auth/loginPage";
 import Drawer from "./layout/Drawer";
 import SnackBar from "./layout/SnackBar";
+import SpeedDial from "./layout/SpeedDial";
 import Home from "./main/Home";
 import ProductOrder from "./main/ProductOrder";
 import OrderList from "./main/OrderList";
@@ -24,22 +25,24 @@ root.render(
       <BrowserRouter>
         <React.StrictMode>
           <Bar />
-          <Drawer />
+          <SpeedDial>
+            <Drawer />
 
-          <SignupPage />
-          <LoginPage />
-          <ProductOrder />
-          <OrderList />
-          <SnackBar />
-
-          <Switch>
-            <Route path="/home" exact>
-              <Home />
-            </Route>
-            <Route path="/product" exact>
-              <Grid />
-            </Route>
-          </Switch>
+            <SignupPage />
+            <LoginPage />
+            <ProductOrder />
+            <OrderList />
+            <SnackBar />
+            {/* <SpeedDial /> */}
+            <Switch>
+              <Route path="/home" exact>
+                <Home />
+              </Route>
+              <Route path="/product" exact>
+                <Grid />
+              </Route>
+            </Switch>
+          </SpeedDial>
         </React.StrictMode>
       </BrowserRouter>
     </Provider>
