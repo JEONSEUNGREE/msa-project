@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/index";
+import { authActions } from "../store/Index";
 import { userLoginHandler } from "../store/DataUtil";
 
 export default function FormDialog() {

@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { LOCAL_URI } from "../constants/constant";
 import { useDispatch } from "react-redux";
-import { productActions } from "../store/index";
 import { getProductInfoHandler } from "../store/DataUtil";
 
 export default function ImgMediaCard(props) {
@@ -21,7 +20,7 @@ export default function ImgMediaCard(props) {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardMedia
         component="img"
         alt="green iguana"

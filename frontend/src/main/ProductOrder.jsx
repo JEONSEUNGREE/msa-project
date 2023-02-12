@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useDispatch, useSelector } from "react-redux";
-import { productActions } from "../store/index";
+import { productActions } from "../store/Index";
 import { orderProductHandler } from "../store/DataUtil";
 
-export default function FormDialog() {
+export default function ProductOrder() {
   const albumInfo = useSelector((state) => state.product.albumInfo);
   const showOrderModal = useSelector((state) => state.product.showOrderModal);
   const [qty, setQty] = useState("");
+
+  useEffect(() => {
+    return () => {
+      dispatch(productActions.clearPrevOrder);
+    };
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -38,7 +43,6 @@ export default function FormDialog() {
       <Dialog open={showOrderModal} onClose={closeOrderModal}>
         <DialogTitle>ALBUM</DialogTitle>
         <DialogContent>
-          <DialogContentText></DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -49,14 +53,14 @@ export default function FormDialog() {
               readOnly: true,
             }}
             variant="filled"
-            value={albumInfo.productName}
+            value={albumInfo.productName || ""}
           />
           <TextField
             autoFocus
             margin="dense"
             id="QTY"
             label="QTY"
-            value={qty}
+            value={qty || 0}
             onChange={(e) => {
               setQty(e.currentTarget.value);
             }}

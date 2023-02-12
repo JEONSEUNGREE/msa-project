@@ -8,12 +8,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useDispatch, useSelector } from "react-redux";
-import { authActions, drawerActions } from "../store/index";
-import { removeCookie } from "../store/cookie";
+import { authActions, drawerActions } from "../store/Index";
+import { removeCookie } from "../store/Cookie";
 import { AUTH_TOKEN } from "../constants/constant";
+import { getMyorderList, commonSnackBar } from "../store/DataUtil";
 
 export default function ButtonAppBar() {
   const isAuth = useSelector((state) => state.auth.isAuth);
+
   const dispatch = useDispatch();
 
   const signupHandler = (event) => {
@@ -29,11 +31,18 @@ export default function ButtonAppBar() {
   const logoutHandler = (event) => {
     event.preventDefault();
     removeCookie(AUTH_TOKEN);
+    dispatch(authActions.checkLogin());
+    commonSnackBar({ msg: "LOGOUT SUCCESS", type: "success" });
   };
 
   const drawerOpenHandler = (event) => {
     event.preventDefault();
     dispatch(drawerActions.isDrawerOpen());
+  };
+
+  const orderListOpenHandler = (event) => {
+    event.preventDefault();
+    getMyorderList();
   };
 
   return (
@@ -62,9 +71,14 @@ export default function ButtonAppBar() {
             </Button>
           )}
           {isAuth && (
-            <Button color="inherit" onClick={logoutHandler}>
-              Logout
-            </Button>
+            <div>
+              <Button color="inherit" onClick={logoutHandler}>
+                Logout
+              </Button>
+              <Button color="inherit" onClick={orderListOpenHandler}>
+                OrderList
+              </Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>

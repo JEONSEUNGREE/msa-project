@@ -7,10 +7,12 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SignupPage from "./auth/SignupPage";
 import LoginPage from "./auth/loginPage";
 import Drawer from "./layout/Drawer";
+import SnackBar from "./layout/SnackBar";
 import Home from "./main/Home";
 import ProductOrder from "./main/ProductOrder";
+import OrderList from "./main/OrderList";
 import { Provider } from "react-redux";
-import store from "./store/index";
+import store from "./store/Index";
 import { CookiesProvider } from "react-cookie";
 import Grid from "./layout/Grid";
 
@@ -27,6 +29,8 @@ root.render(
           <SignupPage />
           <LoginPage />
           <ProductOrder />
+          <OrderList />
+          <SnackBar />
 
           <Switch>
             <Route path="/home" exact>

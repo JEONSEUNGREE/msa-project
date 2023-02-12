@@ -8,7 +8,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
-import { drawerActions } from "../store/index";
+import { drawerActions } from "../store/Index";
 import ListIcon from "@mui/icons-material/List";
 import HomeSharpIcon from "@mui/icons-material/HomeSharp";
 import { Link } from "react-router-dom";

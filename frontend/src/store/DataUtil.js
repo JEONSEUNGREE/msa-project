@@ -1,9 +1,9 @@
 import { LOCAL_URI, APPLICATION } from "../constants/constant";
 import axios from "axios";
-import { setCookie, getCookie } from "./cookie";
+import { setCookie, getCookie } from "./Cookie";
 import { AUTH_TOKEN } from "../constants/constant";
-import store from "./index";
-import { productActions } from "../store/index";
+import store from "./Index";
+import { authActions, productActions, snackBarActions } from "./Index";
 
 export function userLoginHandler(payload) {
   axios
@@ -22,8 +22,13 @@ export function userLoginHandler(payload) {
     )
     .then((res) => {
       setCookie(AUTH_TOKEN, res.headers.account_token, {});
+      store.dispatch(authActions.isLoginClose());
+      store.dispatch(authActions.checkLogin());
+      commonSnackBar({ msg: "LOGIN SUCCESS", type: "success" });
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+    );
 }
 
 export function getProductList() {
@@ -31,8 +36,11 @@ export function getProductList() {
     .get(`${LOCAL_URI}/product-service/sellProductList`)
     .then((res) => {
       store.dispatch(productActions.getProductList(res.data.responseData));
+      commonSnackBar({ msg: "LOAD SUCCESS", type: "success" });
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+    );
 }
 
 export function getProductInfoHandler(productId) {
@@ -45,7 +53,9 @@ export function getProductInfoHandler(productId) {
       store.dispatch(productActions.getProductInfo(res.data.responseData));
       store.dispatch(productActions.showOrderModal());
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+    );
 }
 
 export function orderProductHandler(data) {
@@ -68,10 +78,34 @@ export function orderProductHandler(data) {
     )
     .then((res) => {
       store.dispatch(productActions.getProductInfo(res.data.responseData));
-      store.dispatch(productActions.showOrderModal());
-      alert("ORDER SUCCESS");
+      store.dispatch(productActions.closeOrderModal());
+      commonSnackBar({ msg: "ORDER SUCCESS", type: "success" });
     })
-    .catch((err) => {
-      alert(err.response.data.message);
-    });
+    .catch((err) =>
+      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+    );
+}
+
+export function getMyorderList() {
+  axios
+    .get(`${LOCAL_URI}/user-service/getUserOrderList`, {
+      headers: {
+        account_token: getCookie(AUTH_TOKEN),
+        "API-VERSION": 1,
+        "Content-Type": APPLICATION,
+      },
+    })
+    .then((res) => {
+      console.log(res.data.responseData);
+      store.dispatch(productActions.getMyOrderList(res.data.responseData));
+      store.dispatch(productActions.showMyOrderList());
+      commonSnackBar({ msg: "LOAD SUCCESS", type: "success" });
+    })
+    .catch((err) =>
+      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+    );
+}
+
+export function commonSnackBar(data) {
+  store.dispatch(snackBarActions.showSnackBar(data));
 }

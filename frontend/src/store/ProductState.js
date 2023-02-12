@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductInfoHandler } from "./DataUtil";
 
-const initalDrawerState = {
+const initalProductState = {
   productList: [],
   showOrderModal: false,
   albumInfo: [],
   nowProductId: "",
+
+  showMyOrderList: false,
+  myOrderList: [],
 };
 
 const productSlice = createSlice({
   name: "product",
-  initialState: initalDrawerState,
+  initialState: initalProductState,
   reducers: {
     getProductList(state, data) {
       state.productList = data.payload;
@@ -23,6 +25,19 @@ const productSlice = createSlice({
     },
     closeOrderModal(state) {
       state.showOrderModal = false;
+    },
+    showMyOrderList(state) {
+      state.showMyOrderList = true;
+    },
+    closeMyOrderList(state) {
+      state.showMyOrderList = false;
+    },
+    getMyOrderList(state, data) {
+      state.myOrderList = data.payload;
+    },
+    clearPrevOrder(state) {
+      state.albumInfo = [];
+      state.nowProductId = "";
     },
   },
 });
