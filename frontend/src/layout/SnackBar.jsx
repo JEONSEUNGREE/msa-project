@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -29,6 +28,7 @@ export default function SnackBar() {
         open={snackBarInfo.showSnackBar}
         onClose={handleClose}
         key={snackBarInfo.vertical + snackBarInfo.horizontal}
+        autoHideDuration={1500}
       >
         <Alert severity={snackBarInfo.type}>{snackBarInfo.msg}</Alert>
       </Snackbar>

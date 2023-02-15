@@ -43,7 +43,6 @@ export default function ImgMediaCard(props) {
         <Button size="small" onClick={handleOrderModal}>
           BUY
         </Button>
-        <Button size="small">DESC</Button>
       </CardActions>
     </Card>
   );

@@ -33,7 +33,7 @@ export default function TemporaryDrawer() {
           <ListItem key={text} disablePadding>
             <ListItemButton
               component={Link}
-              to={index % 2 === 0 ? "/home" : "/product"}
+              to={index % 2 === 0 ? "/" : "/product"}
             >
               <ListItemIcon>
                 {index % 2 === 0 ? <HomeSharpIcon /> : <ListIcon />}

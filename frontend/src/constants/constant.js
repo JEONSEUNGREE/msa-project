@@ -1,9 +1,10 @@
 export const APIVERSION = "X-API-VERSION";
-export const LOCAL_URI = "http://172.72.0.1:4001";
+export const LOCAL_URI = "http://172.18.0.1:4001";
+export const PREFIX_URI = "http://172.18.0.1";
 export const APPLICATION = "application/json";
 export const AUTH_TOKEN = "account_token";
 
-export const RABBITMQ_URI = "http://172.72.0.1:1002";
-export const PROMETHEUS_URI = "http://172.72.0.1:9090";
-export const GRAFANA_URI = "http://172.72.0.1:3000";
-export const ZIPKIN_URI = "http://172.72.0.1:3011";
+export const RABBITMQ_URI = `${PREFIX_URI}:1002`;
+export const PROMETHEUS_URI = `${PREFIX_URI}:3018`;
+export const GRAFANA_URI = `${PREFIX_URI}:3017`;
+export const ZIPKIN_URI = `${PREFIX_URI}:3011`;

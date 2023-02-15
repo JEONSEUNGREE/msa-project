@@ -34,17 +34,15 @@ export default function SpeedDialTooltipOpen(props) {
   return (
     <Box
       sx={{
-        height: "calc(100vh - 64px)",
-        width: "100vw",
-        transform: "translateZ(0px)",
         flexGrow: 1,
+        position: "fixed",
+        bottom: 50,
+        right: 50,
       }}
     >
       {props.children}
-      <Backdrop open={open} />
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
-        sx={{ position: "absolute", bottom: 40, right: 40 }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
         onOpen={handleOpen}

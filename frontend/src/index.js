@@ -5,7 +5,7 @@ import Bar from "./layout/Appbar";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SignupPage from "./auth/SignupPage";
-import LoginPage from "./auth/loginPage";
+import LoginPage from "./auth/LoginPage";
 import Drawer from "./layout/Drawer";
 import SnackBar from "./layout/SnackBar";
 import SpeedDial from "./layout/SpeedDial";
@@ -25,24 +25,22 @@ root.render(
       <BrowserRouter>
         <React.StrictMode>
           <Bar />
-          <SpeedDial>
-            <Drawer />
+          <Drawer />
+          <SignupPage />
+          <LoginPage />
+          <ProductOrder />
+          <OrderList />
+          <SnackBar />
 
-            <SignupPage />
-            <LoginPage />
-            <ProductOrder />
-            <OrderList />
-            <SnackBar />
-            {/* <SpeedDial /> */}
-            <Switch>
-              <Route path="/home" exact>
-                <Home />
-              </Route>
-              <Route path="/product" exact>
-                <Grid />
-              </Route>
-            </Switch>
-          </SpeedDial>
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/product" exact>
+              <Grid />
+            </Route>
+          </Switch>
+          <SpeedDial />
         </React.StrictMode>
       </BrowserRouter>
     </Provider>
