@@ -87,7 +87,7 @@ export function orderProductHandler(data) {
 
 export function getMyorderList() {
   axios
-    .get(`http://172.30.1.29:33465/getUserOrderList`, {
+    .get(`${LOCAL_URI}/user-service/getUserOrderList`, {
       headers: {
         account_token: getCookie(AUTH_TOKEN),
         "API-VERSION": 1,

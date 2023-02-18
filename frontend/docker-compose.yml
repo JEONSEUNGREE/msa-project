@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  react-front:
+    image: acoursove2/nginx-react:1.0
+    ports:
+      - "1221:80"
+    networks:
+      ecomm:
+
+networks:
+  ecomm:
+    external: true
+    name: ecommerce-network

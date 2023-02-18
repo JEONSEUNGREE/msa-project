@@ -31,7 +31,7 @@ export default function TemporaryDrawer() {
       icon: <HomeSharpIcon />,
     },
     {
-      name: "Prdocut",
+      name: "Product",
       uri: "/product",
       icon: <ListIcon />,
     },
