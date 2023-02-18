@@ -7,7 +7,6 @@ import { snackBarActions } from "../store/Index";
 
 export default function SnackBar() {
   const snackBarInfo = useSelector((state) => state.snackBar.snackBar);
-  console.log(snackBarInfo);
 
   const dispatch = useDispatch();
   const vertical = snackBarInfo.vertical;

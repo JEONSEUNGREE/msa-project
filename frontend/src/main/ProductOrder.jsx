@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../store/Index";
-import { orderProductHandler } from "../store/DataUtil";
+import { orderProductHandler, getProductList } from "../store/DataUtil";
 
 export default function ProductOrder() {
   const albumInfo = useSelector((state) => state.product.albumInfo);
@@ -16,10 +16,12 @@ export default function ProductOrder() {
   const [qty, setQty] = useState("");
 
   useEffect(() => {
+    getProductList();
     return () => {
       dispatch(productActions.clearPrevOrder);
+      productActions.closeOrderModal();
     };
-  }, []);
+  }, [albumInfo]);
 
   const dispatch = useDispatch();
 
@@ -29,7 +31,6 @@ export default function ProductOrder() {
   };
 
   const orderProduct = (event) => {
-    console.log(albumInfo);
     let data = {
       productId: albumInfo.productId,
       productName: albumInfo.productName,

@@ -14,7 +14,7 @@ export default function HOME() {
         top: "400px",
       }}
     >
-      <Clock format={"HH:mm:ss"} ticking={true} timezone={"US/Pacific"} />
+      <Clock format={"HH:mm:ss"} ticking={true} timezone={"Asia/Seoul"} />
     </Typography>
   );
 }

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCookie } from "./Cookie";
-import { AUTH_TOKEN } from "../constants/constant";
+import { AUTH_TOKEN } from "../constants/Constant";
 
 const initalAuthState = {
   isLogin: false,

@@ -9,8 +9,10 @@ import LoginPage from "./auth/LoginPage";
 import Drawer from "./layout/Drawer";
 import SnackBar from "./layout/SnackBar";
 import SpeedDial from "./layout/SpeedDial";
+import SpringBusConfig from "./layout/SpringBusConfig";
 import Home from "./main/Home";
 import ProductOrder from "./main/ProductOrder";
+import Config from "./main/Config";
 import OrderList from "./main/OrderList";
 import { Provider } from "react-redux";
 import store from "./store/Index";
@@ -31,6 +33,7 @@ root.render(
           <ProductOrder />
           <OrderList />
           <SnackBar />
+          <SpringBusConfig />
 
           <Switch>
             <Route path="/" exact>
@@ -38,6 +41,9 @@ root.render(
             </Route>
             <Route path="/product" exact>
               <Grid />
+            </Route>
+            <Route path="/config" exact>
+              <Config />
             </Route>
           </Switch>
           <SpeedDial />

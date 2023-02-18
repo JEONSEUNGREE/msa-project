@@ -6,10 +6,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { commonSnackBar } from "../store/DataUtil";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/Index";
-import { LOCAL_URI } from "../constants/constant";
+import { LOCAL_URI } from "../constants/Constant";
 import axios from "axios";
 
 export default function FormDialog() {
@@ -47,9 +48,10 @@ export default function FormDialog() {
       )
       .then((res) => {
         dispatch(authActions.isSignupClose());
-        console.log(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+      );
   };
 
   return (

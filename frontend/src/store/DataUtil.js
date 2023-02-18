@@ -1,7 +1,7 @@
-import { LOCAL_URI, APPLICATION } from "../constants/constant";
+import { LOCAL_URI, APPLICATION } from "../constants/Constant";
 import axios from "axios";
 import { setCookie, getCookie } from "./Cookie";
-import { AUTH_TOKEN } from "../constants/constant";
+import { AUTH_TOKEN } from "../constants/Constant";
 import store from "./Index";
 import { authActions, productActions, snackBarActions } from "./Index";
 
@@ -39,7 +39,7 @@ export function getProductList() {
       commonSnackBar({ msg: "LOAD SUCCESS", type: "success" });
     })
     .catch((err) =>
-      commonSnackBar({ msg: err.response.data.errorCode, type: "error" })
+      commonSnackBar({ msg: "FAIL LOAD PRODUCTLIST", type: "error" })
     );
 }
 
@@ -49,7 +49,6 @@ export function getProductInfoHandler(productId) {
       params: { productId: productId },
     })
     .then((res) => {
-      console.log(res.data.responseData);
       store.dispatch(productActions.getProductInfo(res.data.responseData));
       store.dispatch(productActions.showOrderModal());
     })
@@ -88,7 +87,7 @@ export function orderProductHandler(data) {
 
 export function getMyorderList() {
   axios
-    .get(`${LOCAL_URI}/user-service/getUserOrderList`, {
+    .get(`http://172.30.1.29:33465/getUserOrderList`, {
       headers: {
         account_token: getCookie(AUTH_TOKEN),
         "API-VERSION": 1,

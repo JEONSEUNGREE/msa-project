@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions, drawerActions } from "../store/Index";
 import { removeCookie } from "../store/Cookie";
-import { AUTH_TOKEN } from "../constants/constant";
+import { AUTH_TOKEN } from "../constants/Constant";
 import { getMyorderList, commonSnackBar } from "../store/DataUtil";
 
 export default function ButtonAppBar() {
@@ -62,23 +62,26 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Album Shop
           </Typography>
-          <Button color="inherit" onClick={signupHandler}>
-            Signup
-          </Button>
+
           {!isAuth && (
-            <Button color="inherit" onClick={loginHandler}>
-              Login
-            </Button>
+            <>
+              <Button color="inherit" onClick={signupHandler}>
+                Signup
+              </Button>
+              <Button color="inherit" onClick={loginHandler}>
+                Login
+              </Button>
+            </>
           )}
           {isAuth && (
-            <div>
+            <>
               <Button color="inherit" onClick={logoutHandler}>
                 Logout
               </Button>
               <Button color="inherit" onClick={orderListOpenHandler}>
                 OrderList
               </Button>
-            </div>
+            </>
           )}
         </Toolbar>
       </AppBar>

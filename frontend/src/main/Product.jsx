@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { LOCAL_URI } from "../constants/constant";
+import { LOCAL_URI } from "../constants/Constant";
 import { useDispatch } from "react-redux";
 import { getProductInfoHandler } from "../store/DataUtil";
 

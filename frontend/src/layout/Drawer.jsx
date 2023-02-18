@@ -10,6 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerActions } from "../store/Index";
 import ListIcon from "@mui/icons-material/List";
+import PermDataSettingIcon from "@mui/icons-material/PermDataSetting";
 import HomeSharpIcon from "@mui/icons-material/HomeSharp";
 import { Link } from "react-router-dom";
 
@@ -23,22 +24,35 @@ export default function TemporaryDrawer() {
     dispatch(drawerActions.isDrawerClose());
   };
 
+  const navItem = [
+    {
+      name: "Home",
+      uri: "/",
+      icon: <HomeSharpIcon />,
+    },
+    {
+      name: "Prdocut",
+      uri: "/product",
+      icon: <ListIcon />,
+    },
+    {
+      name: "Config",
+      uri: "/config",
+      icon: <PermDataSettingIcon />,
+    },
+  ];
+
   const list = (anchor) => (
     <Box
       role="presentation"
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
     >
       <List>
-        {["Home", "Product"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              component={Link}
-              to={index % 2 === 0 ? "/" : "/product"}
-            >
-              <ListItemIcon>
-                {index % 2 === 0 ? <HomeSharpIcon /> : <ListIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        {navItem.map((item, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton component={Link} to={item.uri}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
