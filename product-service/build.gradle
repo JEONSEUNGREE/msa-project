@@ -18,7 +18,7 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
-group = 'com.example'
+group = 'product-service'
 version = '1.0'
 sourceCompatibility = '11'
 
@@ -66,6 +66,8 @@ dependencies {
     testImplementation 'org.springframework.cloud:spring-cloud-contract-wiremock'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.3'
 
     implementation project(':common-source')
 }

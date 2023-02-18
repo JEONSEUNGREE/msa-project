@@ -21,22 +21,25 @@ public class TestProducts implements CommandLineRunner {
     public void run(String... args) throws Exception {
         List<String> albumList = Arrays.asList("justin bieber1", "justin bieber2", "taylor swift1", "taylor swift2"
                 , "taylor swift3", "taylor swift4", "chrisBrown1", "chrisBrown2", "bigBang1", "bigBang2");
-        for (int i = 1; i <= 10; i++) {
-            ProductsMs productMs = ProductsMs.builder()
-                    .productLocation("seoul")
-                    .productDesc("dsec")
-                    .productName(albumList.get(i - 1))
-                    .productPrice(10000)
-                    .categoryId(1)
-                    .userId("test")
-                    .qty(50)
-                    /* 썸네일 이미지 url /product-image/** */
-                    .productImages("/product-service/product-image/" + i + ".jpg")
-                    .modifyDate(new Date())
-                    .regDate(new Date())
-                    .productStatus("RES")
-                    .build();
-            repository.save(productMs);
+
+        if (repository.findAll().size() < 1) {
+            for (int i = 1; i <= 10; i++) {
+                ProductsMs productMs = ProductsMs.builder()
+                        .productLocation("seoul")
+                        .productDesc("dsec")
+                        .productName(albumList.get(i - 1))
+                        .productPrice(10000)
+                        .categoryId(1)
+                        .userId("test")
+                        .qty(50)
+                        /* 썸네일 이미지 url /product-image/** */
+                        .productImages("/product-service/product-image/" + i + ".jpg")
+                        .modifyDate(new Date())
+                        .regDate(new Date())
+                        .productStatus("RES")
+                        .build();
+                repository.save(productMs);
+            }
         }
     }
 }

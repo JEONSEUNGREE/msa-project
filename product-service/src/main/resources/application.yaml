@@ -65,6 +65,15 @@ logging:
       hibernate:
         type: trace
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh, info, metrics, prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+
 file:
   resource:
     path: /product-image/**
